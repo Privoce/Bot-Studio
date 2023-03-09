@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__next {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#__next {
+  overflow-y: auto;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+.caret-default {
+  caret-color: black;
+}
+
+.dark .caret-default {
+  caret-color: white;
+}

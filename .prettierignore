@@ -1,0 +1,5 @@
+/.next/
+/build/
+/.idea/
+/public/mockServiceWorker.js
+/scripts/remark-prism.mjs
