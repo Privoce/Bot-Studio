@@ -32,7 +32,7 @@ yarn husky add .husky/pre-commit "yarn tsc --noEmit && yarn eslint . && yarn pre
 # add dependencies
 yarn add axios immer zustand @tanstack/react-query # state management
 yarn add react-hook-form yup @hookform/resolvers # form
-yarn add @floating-ui/react-dom react-select # ui
+yarn add @floating-ui/react react-select @headlessui/react # ui
 yarn add clsx dayjs # utils
 
 # mswjs

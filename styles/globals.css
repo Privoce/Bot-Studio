@@ -28,3 +28,20 @@ html, body, #__next {
 .dark .caret-default {
   caret-color: white;
 }
+
+/* text */
+.text-color-primary {
+  @apply text-gray-900;
+}
+
+.bg-hover-theme {
+  @apply bg-theme-500/20;
+}
+
+.hover-gray {
+  @apply hover:bg-gray-100;
+}
+
+.bg-text-field {
+  @apply bg-gray-50;
+}
