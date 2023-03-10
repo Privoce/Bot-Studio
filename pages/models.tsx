@@ -1,13 +1,49 @@
 import type { NextPage } from 'next';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+import { Model } from 'openai';
 import Dashboard from '../layouts/dashboard';
+import { useOpenai } from '../context/openai';
+import MyModels from '../components/models/my-models';
+import OtherModels from '../components/models/other-models';
+import H2 from '../components/heading/h2';
 
-const Home: NextPage = () => (
-  <Dashboard>
-    <div className="relative h-13 flex items-center px-4  w-full">
-      <div className="absolute bottom-0 left-0 right-0 border-b" />
-    </div>
-    <div>Landing</div>
-  </Dashboard>
-);
+const official = ['openai', 'openai-dev', 'openai-internal', 'system'];
+
+const Home: NextPage = () => {
+  const { openai } = useOpenai();
+  const [models, setModels] = useState<Model[]>([]);
+
+  useQuery({
+    enabled: openai.enabled,
+    queryKey: ['models'],
+    queryFn: () => openai.listModels(),
+    onSuccess: (data) => setModels(data.data),
+  });
+
+  const { myModels, officialModels } = useMemo(() => {
+    const m1 = models
+      .filter((m) => !official.includes(m.owned_by))
+      .sort((a, b) => a.created - b.created);
+    const m2 = models
+      .filter((m) => official.includes(m.owned_by))
+      .sort((a, b) => a.created - b.created);
+    return { myModels: m1, officialModels: m2 };
+  }, [models]);
+
+  return (
+    <Dashboard>
+      <div className="px-4 sm:px-6 pb-13">
+        <H2>My Models</H2>
+        <MyModels
+          models={myModels}
+          onDelete={(id) => setModels([...models.filter((m) => m.id !== id)])}
+        />
+        <H2>Official Models</H2>
+        <OtherModels models={officialModels} />
+      </div>
+    </Dashboard>
+  );
+};
 
 export default Home;
