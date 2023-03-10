@@ -1,12 +1,26 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import { QueryClient, Hydrate, QueryClientProvider, DehydratedState } from '@tanstack/react-query';
+import { useState } from 'react';
 import { OpenaiContextProvider } from '../context/openai';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function createQueryClient() {
+  return new QueryClient({
+    defaultOptions: { queries: { refetchOnWindowFocus: false } },
+  });
+}
+
+function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: DehydratedState }>) {
+  const [queryClient] = useState(createQueryClient);
+
   return (
-    <OpenaiContextProvider>
-      <Component {...pageProps} />
-    </OpenaiContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <OpenaiContextProvider>
+          <Component {...pageProps} />
+        </OpenaiContextProvider>
+      </Hydrate>
+    </QueryClientProvider>
   );
 }
 
