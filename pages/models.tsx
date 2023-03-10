@@ -1,18 +1,19 @@
 import type { NextPage } from 'next';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
-import { Model } from 'openai';
+import { useMemo } from 'react';
 import Dashboard from '../layouts/dashboard';
 import { useOpenai } from '../context/openai';
 import MyModels from '../components/models/my-models';
 import OtherModels from '../components/models/other-models';
 import H2 from '../components/heading/h2';
+import { useModelStore } from '../store/use-model-store';
 
 const official = ['openai', 'openai-dev', 'openai-internal', 'system'];
 
 const Home: NextPage = () => {
   const { openai } = useOpenai();
-  const [models, setModels] = useState<Model[]>([]);
+  const models = useModelStore((s) => s.models);
+  const setModels = useModelStore((s) => s.setModels);
 
   useQuery({
     enabled: openai.enabled,
