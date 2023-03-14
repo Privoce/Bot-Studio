@@ -18,7 +18,7 @@ const Index: FC<Props> = () => (
     <NavItem href="/" text="Chat" icon={IconChat} />
     <NavItem href="/models" text="Models" icon={IconModel} />
     <NavItem href="/files" text="Files" icon={IconFolder} />
-    <NavItem href="/fine-tune" text="Fine tune" icon={IconTune} />
+    <NavItem href="/fine-tunes" text="Fine tune" icon={IconTune} />
     <NavItem href="/settings" text="Settings" icon={IconSettings} />
   </nav>
 );

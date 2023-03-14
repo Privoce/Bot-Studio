@@ -34,12 +34,20 @@ html, body, #__next {
   @apply text-gray-900;
 }
 
+.text-color-secondary {
+  @apply text-gray-500;
+}
+
 .bg-hover-theme {
   @apply bg-theme-500/20;
 }
 
 .hover-gray {
   @apply hover:bg-gray-100;
+}
+
+.hover-theme {
+  @apply hover:bg-theme-500/20;
 }
 
 .bg-text-field {

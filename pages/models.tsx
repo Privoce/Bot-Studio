@@ -22,15 +22,17 @@ const Home: NextPage = () => {
     onSuccess: (data) => setModels(data.data),
   });
 
-  const { myModels, officialModels } = useMemo(() => {
-    const m1 = models
-      .filter((m) => !official.includes(m.owned_by))
-      .sort((a, b) => a.created - b.created);
-    const m2 = models
-      .filter((m) => official.includes(m.owned_by))
-      .sort((a, b) => a.created - b.created);
-    return { myModels: m1, officialModels: m2 };
-  }, [models]);
+  const { myModels, officialModels } = useMemo(
+    () => ({
+      myModels: models
+        .filter((m) => !official.includes(m.owned_by))
+        .sort((a, b) => a.created - b.created),
+      officialModels: models
+        .filter((m) => official.includes(m.owned_by))
+        .sort((a, b) => a.created - b.created),
+    }),
+    [models]
+  );
 
   return (
     <Dashboard>

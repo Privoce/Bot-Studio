@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { ListModelsResponse } from 'openai';
+import { ListModelsResponse, ListFineTunesResponse, CreateFineTuneRequest } from 'openai';
 import { hasText } from '../utils/string';
 
 export class OpenAIApi {
@@ -23,4 +23,10 @@ export class OpenAIApi {
 
   public deleteModel = (id: string) =>
     this.axios.delete(`/v1/models/${id}`).then((res) => res.data);
+
+  public createFineTune = (body: CreateFineTuneRequest) =>
+    this.axios.post('/v1/fine-tunes/', body).then((res) => res.data);
+
+  public listFineTunes = () =>
+    this.axios.get<ListFineTunesResponse>('/v1/fine-tunes').then((res) => res.data);
 }

@@ -7,17 +7,11 @@ import IconCopy from '../../assets/material/content_copy_FILL0_wght400_GRAD0_ops
 import IconDelete from '../../assets/material/delete_FILL0_wght400_GRAD0_opsz20.svg';
 import Dialog from '../../lib/dialog';
 import { useOpenai } from '../../context/openai';
+import { getSuffix } from '../utils';
 
 interface Props {
   models: Model[];
   onDelete: (id: string) => void;
-}
-
-function getSuffix(id: string) {
-  const s = id.split(':');
-  if (s.length !== 3) return '';
-  // -2023-03-08-16-20-39 = 20 chars
-  return s[2].substring(0, s[2].length - 20);
 }
 
 const Index: FC<Props> = ({ models, onDelete }) => {
@@ -79,7 +73,11 @@ const Index: FC<Props> = ({ models, onDelete }) => {
               <td className="w-px">{new Date(m.created * 1000).toLocaleDateString()}</td>
               <td className="w-px">
                 <div className="flex w-full justify-center">
-                  <button type="button" className="w-5 h-5" onClick={onClickDelete(m)}>
+                  <button
+                    type="button"
+                    className="w-5 h-5 rounded hover:bg-red-200 hover:text-red-700"
+                    onClick={onClickDelete(m)}
+                  >
                     <IconDelete className="w-5 h-5" />
                   </button>
                 </div>
