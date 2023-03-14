@@ -1,15 +1,17 @@
-import { FC, MouseEvent, useState } from 'react';
+import { FC, useState } from 'react';
 import { FineTune } from 'openai';
 import clsx from 'clsx';
-import copy from 'copy-to-clipboard';
 import { useMutation } from '@tanstack/react-query';
 import IconEvent from '../../assets/material/event_FILL0_wght400_GRAD0_opsz20.svg';
-import IconCopy from '../../assets/material/content_copy_FILL0_wght400_GRAD0_opsz20.svg';
+import IconFile from '../../assets/material/article_FILL0_wght400_GRAD0_opsz20.svg';
 import { getSuffix } from '../utils';
 import ButtonMore from './button-more';
 import DrawerEvents from './drawer-events';
 import { useOpenai } from '../../context/openai';
 import { useFineTuneStore } from '../../store/use-fine-tune-store';
+import DrawerFiles from './drawer-files';
+import Copy5 from '../button/copy-5';
+import Dialog from '../../lib/dialog';
 
 interface Props {
   fineTunes: FineTune[];
@@ -17,24 +19,39 @@ interface Props {
 
 const Index: FC<Props> = ({ fineTunes }) => {
   const { openai } = useOpenai();
+  const [showFileDrawer, setShowFileDrawer] = useState(false);
   const [showEventDrawer, setShowEventDrawer] = useState(false);
-  const [fineTune, setFineTune] = useState<FineTune>();
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [selected, setSelected] = useState<FineTune>();
   const events = useFineTuneStore((s) => s.events);
   const setEvents = useFineTuneStore((s) => s.setEvents);
+  const setFineTune = useFineTuneStore((s) => s.setFineTune);
 
   const listEventMut = useMutation(openai.listFineTuneEvents, {
     onSuccess: (data, id) => setEvents(id, data.data),
   });
 
-  const onClickCopy = (id: string) => (e: MouseEvent) => {
-    e.stopPropagation();
-    copy(id);
+  const cancelMut = useMutation(openai.cancelFineTune, {
+    onSuccess: (data) => {
+      setFineTune(data);
+      setShowCancelDialog(false);
+    },
+  });
+
+  const onClickFile = (f: FineTune) => {
+    setSelected(f);
+    setShowFileDrawer(true);
   };
 
   const onClickEvent = (f: FineTune) => {
-    setFineTune(f);
+    setSelected(f);
     setShowEventDrawer(true);
     listEventMut.mutate(f.id);
+  };
+
+  const onClickCancel = (f: FineTune) => {
+    setSelected(f);
+    setShowCancelDialog(true);
   };
 
   return (
@@ -53,6 +70,7 @@ const Index: FC<Props> = ({ fineTunes }) => {
             <th>Status</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>Files</th>
             <th>Events</th>
             <th>More</th>
           </tr>
@@ -65,9 +83,7 @@ const Index: FC<Props> = ({ fineTunes }) => {
             >
               <td className="w-px">
                 <div className="flex w-full justify-center">
-                  <button type="button" className="w-5 h-5" onClick={onClickCopy(f.id)}>
-                    <IconCopy className="w-5 h-5" />
-                  </button>
+                  <Copy5 copyText={f.id} />
                 </div>
               </td>
               <td className="w-px">{f.model}</td>
@@ -75,6 +91,17 @@ const Index: FC<Props> = ({ fineTunes }) => {
               <td className="w-px">{f.status}</td>
               <td className="w-px">{f.created_at}</td>
               <td className="w-px">{f.updated_at}</td>
+              <td className="w-px">
+                <div className="flex w-full justify-center">
+                  <button
+                    type="button"
+                    className="w-5 h-5 rounded hover-theme hover:text-theme-700"
+                    onClick={() => onClickFile(f)}
+                  >
+                    <IconFile className="w-5 h-5" />
+                  </button>
+                </div>
+              </td>
               <td className="w-px">
                 <div className="flex w-full justify-center">
                   <button
@@ -88,7 +115,7 @@ const Index: FC<Props> = ({ fineTunes }) => {
               </td>
               <td className="w-px">
                 <div className="flex w-full justify-center">
-                  <ButtonMore fineTune={f} />
+                  <ButtonMore fineTune={f} onCancel={onClickCancel} />
                 </div>
               </td>
             </tr>
@@ -98,13 +125,35 @@ const Index: FC<Props> = ({ fineTunes }) => {
       {fineTunes.length === 0 && (
         <div className="text-center text-sm text-color-secondary">No Data</div>
       )}
-      {fineTune && (
+      {selected && (
         <DrawerEvents
           isLoading={listEventMut.isLoading}
           visible={showEventDrawer}
-          events={events[fineTune.id] ?? []}
+          events={events[selected.id] ?? []}
           onCancel={() => setShowEventDrawer(false)}
-          onRefresh={() => listEventMut.mutate(fineTune.id)}
+          onRefresh={() => listEventMut.mutate(selected.id)}
+        />
+      )}
+      {selected && (
+        <DrawerFiles
+          visible={showFileDrawer}
+          fineTune={selected}
+          onCancel={() => setShowFileDrawer(false)}
+        />
+      )}
+      {selected && (
+        <Dialog
+          title="Cancel fine-tune"
+          description={`Are you sure you want to cancel fine-tune: ${selected.id} ?`}
+          visible={showCancelDialog}
+          showCancel
+          showDanger
+          cancelText="No"
+          dangerText="Yes"
+          cancelDisabled={cancelMut.isLoading}
+          dangerDisabled={cancelMut.isLoading}
+          onCancel={() => setShowCancelDialog(false)}
+          onDanger={() => cancelMut.mutate(selected.id)}
         />
       )}
     </div>

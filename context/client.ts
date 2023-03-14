@@ -4,6 +4,7 @@ import {
   ListFineTunesResponse,
   CreateFineTuneRequest,
   ListFineTuneEventsResponse,
+  FineTune,
 } from 'openai';
 import { hasText } from '../utils/string';
 
@@ -35,10 +36,11 @@ export class OpenAIApi {
   public listFineTunes = () =>
     this.axios.get<ListFineTunesResponse>('/v1/fine-tunes').then((res) => res.data);
 
-  public listFineTuneEvents = (fineTuneId: string) => {
-    console.log('id: ', fineTuneId);
-    return this.axios
+  public listFineTuneEvents = (fineTuneId: string) =>
+    this.axios
       .get<ListFineTuneEventsResponse>(`/v1/fine-tunes/${fineTuneId}/events`)
       .then((res) => res.data);
-  };
+
+  public cancelFineTune = (fineTuneId: string) =>
+    this.axios.post<FineTune>(`/v1/fine-tunes/${fineTuneId}/cancel`).then((res) => res.data);
 }

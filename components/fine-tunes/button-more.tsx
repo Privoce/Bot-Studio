@@ -6,19 +6,10 @@ import MenuItem from '../menu/menu-item';
 
 interface Props {
   fineTune: FineTune;
-  onTrainingFiles?: (fineTune: FineTune) => void;
-  onValidationFiles?: (fineTune: FineTune) => void;
-  onResultFiles?: (fineTune: FineTune) => void;
   onCancel?: (fineTune: FineTune) => void;
 }
 
-const Index: FC<Props> = ({
-  fineTune,
-  onTrainingFiles,
-  onValidationFiles,
-  onResultFiles,
-  onCancel,
-}) => {
+const Index: FC<Props> = ({ fineTune, onCancel }) => {
   const [visible, setVisible] = useState(false);
   const { x, y, strategy, refs, context } = useFloating({
     open: visible,
@@ -53,9 +44,6 @@ const Index: FC<Props> = ({
           style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
           className="z-50 flex flex-col text-sm border rounded-lg overflow-hidden shadow-lg bg-white py-2"
         >
-          <MenuItem onClick={onClick(onTrainingFiles)}>Training Files</MenuItem>
-          <MenuItem onClick={onClick(onValidationFiles)}>Validation Files</MenuItem>
-          <MenuItem onClick={onClick(onResultFiles)}>Result Files</MenuItem>
           <MenuItem danger onClick={onClick(onCancel)}>
             Cancel Fine-tune
           </MenuItem>
