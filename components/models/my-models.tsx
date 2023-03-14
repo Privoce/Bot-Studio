@@ -49,7 +49,7 @@ const Index: FC<Props> = ({ models, onDelete }) => {
           >
             <th>ID</th>
             <th>Model</th>
-            <th>Suffix</th>
+            <th className="w-full">Suffix</th>
             <th>Owned By</th>
             <th colSpan={2}>Created</th>
           </tr>
@@ -67,8 +67,8 @@ const Index: FC<Props> = ({ models, onDelete }) => {
                   </button>
                 </div>
               </td>
-              <td>{m.id.split(':')[0]}</td>
-              <td>{getSuffix(m.id)}</td>
+              <td className="w-px">{m.id.split(':')[0]}</td>
+              <td className="w-full">{getSuffix(m.id)}</td>
               <td className="w-px">{m.owned_by}</td>
               <td className="w-px">{new Date(m.created * 1000).toLocaleDateString()}</td>
               <td className="w-px">

@@ -24,10 +24,10 @@ const Index: FC<Props> = ({ models }) => {
               '[&>th]:font-semibold [&>th]:leading-5 [&>th]:py-2 [&>th]:px-2.5'
             )}
           >
-            <th>ID</th>
-            <th>Model</th>
-            <th>Owned By</th>
-            <th>Created</th>
+            <th className="w-px">ID</th>
+            <th className="w-full">Model</th>
+            <th className="w-px">Owned By</th>
+            <th className="w-px">Created</th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@ const Index: FC<Props> = ({ models }) => {
                   </button>
                 </div>
               </td>
-              <td>{m.id}</td>
+              <td className="w-full">{m.id}</td>
               <td className="w-px">{m.owned_by}</td>
               <td className="w-px">{new Date(m.created * 1000).toLocaleDateString()}</td>
             </tr>

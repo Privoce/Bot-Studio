@@ -5,6 +5,8 @@ import {
   CreateFineTuneRequest,
   ListFineTuneEventsResponse,
   FineTune,
+  ListFilesResponse,
+  DeleteFileResponse,
 } from 'openai';
 import { hasText } from '../utils/string';
 
@@ -43,4 +45,9 @@ export class OpenAIApi {
 
   public cancelFineTune = (fineTuneId: string) =>
     this.axios.post<FineTune>(`/v1/fine-tunes/${fineTuneId}/cancel`).then((res) => res.data);
+
+  public listFiles = () => this.axios.get<ListFilesResponse>('/v1/files').then((res) => res.data);
+
+  public deleteFile = (fileId: string) =>
+    this.axios.delete<DeleteFileResponse>(`/v1/files/${fileId}`).then((res) => res.data);
 }

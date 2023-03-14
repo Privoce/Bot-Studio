@@ -1,18 +1,22 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { FineTune, FineTuneEvent } from 'openai';
+import { FineTune, FineTuneEvent, OpenAIFile } from 'openai';
 import { Dictionary } from '../types/common';
 
 interface Store {
+  files: OpenAIFile[];
   fineTunes: FineTune[];
   events: Dictionary<FineTuneEvent[]>;
   setFineTune: (fineTune: FineTune) => void;
   setFineTunes: (fineTunes: FineTune[]) => void;
   setEvents: (fineTuneId: string, events: FineTuneEvent[]) => void;
+  setFiles: (files: OpenAIFile[]) => void;
+  removeFile: (fileId: string) => void;
 }
 
 export const useFineTuneStore = create(
   immer<Store>((set) => ({
+    files: [],
     fineTunes: [],
     events: {},
     setFineTune: (fineTune) =>
@@ -26,6 +30,14 @@ export const useFineTuneStore = create(
     setEvents: (fineTuneId, events) =>
       set((state) => {
         state.events[fineTuneId] = events;
+      }),
+    setFiles: (files) =>
+      set((state) => {
+        state.files = files;
+      }),
+    removeFile: (fileId) =>
+      set((state) => {
+        state.files = state.files.filter((f) => f.id !== fileId);
       }),
   }))
 );

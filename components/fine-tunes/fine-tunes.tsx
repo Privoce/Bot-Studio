@@ -64,15 +64,15 @@ const Index: FC<Props> = ({ fineTunes }) => {
               '[&>th]:font-semibold [&>th]:leading-5 [&>th]:py-2 [&>th]:px-2.5'
             )}
           >
-            <th>ID</th>
-            <th>Model</th>
-            <th>Suffix</th>
-            <th>Status</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Files</th>
-            <th>Events</th>
-            <th>More</th>
+            <th className="w-px">ID</th>
+            <th className="w-px">Model</th>
+            <th className="w-full">Suffix</th>
+            <th className="w-px">Status</th>
+            <th className="w-px">Created</th>
+            <th className="w-px">Updated</th>
+            <th className="w-px">Files</th>
+            <th className="w-px">Events</th>
+            <th className="w-px">More</th>
           </tr>
         </thead>
         <tbody>
@@ -87,7 +87,7 @@ const Index: FC<Props> = ({ fineTunes }) => {
                 </div>
               </td>
               <td className="w-px">{f.model}</td>
-              <td className="w-px">{getSuffix(f.fine_tuned_model)}</td>
+              <td className="w-full">{getSuffix(f.fine_tuned_model)}</td>
               <td className="w-px">{f.status}</td>
               <td className="w-px">{f.created_at}</td>
               <td className="w-px">{f.updated_at}</td>

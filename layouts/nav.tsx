@@ -20,6 +20,8 @@ const Index: FC<Props> = () => (
     <NavItem href="/files" text="Files" icon={IconFolder} />
     <NavItem href="/fine-tunes" text="Fine tune" icon={IconTune} />
     <NavItem href="/settings" text="Settings" icon={IconSettings} />
+    <div className="flex-1" />
+    <div>Github</div>
   </nav>
 );
 

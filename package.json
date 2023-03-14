@@ -1,6 +1,6 @@
 {
-  "name": "openai",
-  "version": "0.1.0",
+  "name": "openai-dashboard",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
