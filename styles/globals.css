@@ -46,6 +46,10 @@ html, body, #__next {
   @apply hover:bg-gray-100;
 }
 
+.hover-danger {
+  @apply hover:bg-red-500/20;
+}
+
 .hover-theme {
   @apply hover:bg-theme-500/20;
 }

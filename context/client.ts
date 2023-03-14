@@ -1,5 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
-import { ListModelsResponse, ListFineTunesResponse, CreateFineTuneRequest } from 'openai';
+import {
+  ListModelsResponse,
+  ListFineTunesResponse,
+  CreateFineTuneRequest,
+  ListFineTuneEventsResponse,
+} from 'openai';
 import { hasText } from '../utils/string';
 
 export class OpenAIApi {
@@ -29,4 +34,11 @@ export class OpenAIApi {
 
   public listFineTunes = () =>
     this.axios.get<ListFineTunesResponse>('/v1/fine-tunes').then((res) => res.data);
+
+  public listFineTuneEvents = (fineTuneId: string) => {
+    console.log('id: ', fineTuneId);
+    return this.axios
+      .get<ListFineTuneEventsResponse>(`/v1/fine-tunes/${fineTuneId}/events`)
+      .then((res) => res.data);
+  };
 }

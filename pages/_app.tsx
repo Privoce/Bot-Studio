@@ -2,7 +2,15 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { QueryClient, Hydrate, QueryClientProvider, DehydratedState } from '@tanstack/react-query';
 import { useState } from 'react';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import calendar from 'dayjs/plugin/calendar';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { OpenaiContextProvider } from '../context/openai';
+
+dayjs.extend(calendar);
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 function createQueryClient() {
   return new QueryClient({

@@ -14,6 +14,7 @@ const Home: NextPage = () => {
   const createMut = useMutation(openai.createFineTune);
 
   useQuery({
+    enabled: openai.enabled,
     queryKey: ['fine-tunes'],
     queryFn: () => openai.listFineTunes(),
     onSuccess: (data) => setFineTunes(data.data),
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
 
   const onClick = (e: MouseEvent) => {
     e.stopPropagation();
-    createMut.mutate();
+    createMut.mutate({ model: '', training_file: '' });
   };
 
   return (

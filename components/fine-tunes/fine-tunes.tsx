@@ -1,20 +1,40 @@
-import { FC, MouseEvent } from 'react';
+import { FC, MouseEvent, useState } from 'react';
 import { FineTune } from 'openai';
 import clsx from 'clsx';
 import copy from 'copy-to-clipboard';
+import { useMutation } from '@tanstack/react-query';
 import IconEvent from '../../assets/material/event_FILL0_wght400_GRAD0_opsz20.svg';
 import IconCopy from '../../assets/material/content_copy_FILL0_wght400_GRAD0_opsz20.svg';
 import { getSuffix } from '../utils';
 import ButtonMore from './button-more';
+import DrawerEvents from './drawer-events';
+import { useOpenai } from '../../context/openai';
+import { useFineTuneStore } from '../../store/use-fine-tune-store';
 
 interface Props {
   fineTunes: FineTune[];
 }
 
 const Index: FC<Props> = ({ fineTunes }) => {
+  const { openai } = useOpenai();
+  const [showEventDrawer, setShowEventDrawer] = useState(false);
+  const [fineTune, setFineTune] = useState<FineTune>();
+  const events = useFineTuneStore((s) => s.events);
+  const setEvents = useFineTuneStore((s) => s.setEvents);
+
+  const listEventMut = useMutation(openai.listFineTuneEvents, {
+    onSuccess: (data, id) => setEvents(id, data.data),
+  });
+
   const onClickCopy = (id: string) => (e: MouseEvent) => {
     e.stopPropagation();
     copy(id);
+  };
+
+  const onClickEvent = (f: FineTune) => {
+    setFineTune(f);
+    setShowEventDrawer(true);
+    listEventMut.mutate(f.id);
   };
 
   return (
@@ -60,6 +80,7 @@ const Index: FC<Props> = ({ fineTunes }) => {
                   <button
                     type="button"
                     className="w-5 h-5 rounded hover-theme hover:text-theme-700"
+                    onClick={() => onClickEvent(f)}
                   >
                     <IconEvent className="w-5 h-5" />
                   </button>
@@ -67,16 +88,25 @@ const Index: FC<Props> = ({ fineTunes }) => {
               </td>
               <td className="w-px">
                 <div className="flex w-full justify-center">
-                  <ButtonMore />
+                  <ButtonMore fineTune={f} />
                 </div>
               </td>
             </tr>
           ))}
-          {fineTunes.length === 0 && (
-            <div className="text-center text-sm text-color-secondary">No Data</div>
-          )}
         </tbody>
       </table>
+      {fineTunes.length === 0 && (
+        <div className="text-center text-sm text-color-secondary">No Data</div>
+      )}
+      {fineTune && (
+        <DrawerEvents
+          isLoading={listEventMut.isLoading}
+          visible={showEventDrawer}
+          events={events[fineTune.id] ?? []}
+          onCancel={() => setShowEventDrawer(false)}
+          onRefresh={() => listEventMut.mutate(fineTune.id)}
+        />
+      )}
     </div>
   );
 };

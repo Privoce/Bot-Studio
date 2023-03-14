@@ -1,16 +1,24 @@
 import { FC, useState, MouseEvent } from 'react';
 import { flip, useDismiss, useFloating, useInteractions } from '@floating-ui/react';
+import { FineTune } from 'openai';
 import IconMore from '../../assets/material/more_horiz_FILL0_wght400_GRAD0_opsz20.svg';
 import MenuItem from '../menu/menu-item';
 
 interface Props {
-  onTrainingFiles?: () => void;
-  onValidationFiles?: () => void;
-  onResultFiles?: () => void;
-  onCancel?: () => void;
+  fineTune: FineTune;
+  onTrainingFiles?: (fineTune: FineTune) => void;
+  onValidationFiles?: (fineTune: FineTune) => void;
+  onResultFiles?: (fineTune: FineTune) => void;
+  onCancel?: (fineTune: FineTune) => void;
 }
 
-const Index: FC<Props> = ({ onTrainingFiles, onValidationFiles, onResultFiles, onCancel }) => {
+const Index: FC<Props> = ({
+  fineTune,
+  onTrainingFiles,
+  onValidationFiles,
+  onResultFiles,
+  onCancel,
+}) => {
   const [visible, setVisible] = useState(false);
   const { x, y, strategy, refs, context } = useFloating({
     open: visible,
@@ -21,10 +29,10 @@ const Index: FC<Props> = ({ onTrainingFiles, onValidationFiles, onResultFiles, o
   const dismiss = useDismiss(context);
   const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
 
-  const onClick = (fn?: () => void) => (e: MouseEvent) => {
+  const onClick = (fn?: (fineTune: FineTune) => void) => (e: MouseEvent) => {
     e.stopPropagation();
     setVisible(false);
-    fn?.();
+    fn?.(fineTune);
   };
 
   return (

@@ -15,7 +15,9 @@ const Index: FC<Props> = ({ danger, style, children, testid, onClick }) => (
     data-testid={testid}
     className={clsx(
       'w-full text-sm px-4 flex items-center h-8 cursor-pointer whitespace-nowrap',
-      danger ? 'text-red-500 hover:text-white hover:bg-red-500' : 'text-color-primary hover-theme'
+      danger
+        ? 'text-red-500 hover:text-red-700 hover-danger'
+        : 'text-color-primary hover-theme hover:text-theme-700'
     )}
     style={style}
     onClick={onClick}
