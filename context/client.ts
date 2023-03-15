@@ -33,7 +33,7 @@ export class OpenAIApi {
     this.axios.delete(`/v1/models/${id}`).then((res) => res.data);
 
   public createFineTune = (body: CreateFineTuneRequest) =>
-    this.axios.post('/v1/fine-tunes/', body).then((res) => res.data);
+    this.axios.post('/v1/fine-tunes', body).then((res) => res.data);
 
   public listFineTunes = () =>
     this.axios.get<ListFineTunesResponse>('/v1/fine-tunes').then((res) => res.data);
