@@ -13,7 +13,7 @@ interface Props {
 
 const Index: FC<Props> = ({ fineTune, visible, onCancel }) => (
   <Drawer visible={visible} onClose={onCancel} placement="right">
-    <div className="relative bg-white w-screen sm:w-[680px] overflow-y-auto">
+    <div className="relative bg-white w-screen sm:w-[720px] overflow-y-auto">
       <div className="z-10 sticky top-0 bg-white text-xl font-medium pl-4 pr-2.5 h-13 flex items-center justify-between">
         <div>Fine-tune Files</div>
         <Close8 onClick={onCancel} />

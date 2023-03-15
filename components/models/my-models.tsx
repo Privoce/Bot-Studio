@@ -44,7 +44,7 @@ const Index: FC<Props> = ({ models, onDelete }) => {
           <tr
             className={clsx(
               'text-left [&>th]:whitespace-nowrap border-b',
-              '[&>th]:font-semibold [&>th]:leading-5 [&>th]:py-2 [&>th]:px-2.5'
+              '[&>th]:font-semibold [&>th]:leading-5 [&>th]:py-2 [&>th]:px-2'
             )}
           >
             <th>ID</th>
@@ -58,7 +58,7 @@ const Index: FC<Props> = ({ models, onDelete }) => {
           {models.map((m) => (
             <tr
               key={m.id}
-              className="leading-5 text-left [&>td]:py-1.5 [&>td]:px-2.5 [&>td]:whitespace-nowrap border-b"
+              className="leading-5 text-left [&>td]:py-1.5 [&>td]:px-2 [&>td]:whitespace-nowrap border-b"
             >
               <td className="w-px">
                 <div className="flex w-full justify-center">

@@ -5,11 +5,13 @@ import dayjs from 'dayjs';
 import Copy5 from '../button/copy-5';
 import ButtonMore from './button-more';
 import Dialog from '../../lib/dialog';
+import IconDownload from '../../assets/material/download_FILL0_wght400_GRAD0_opsz20.svg';
 
 interface Props {
   isLoading?: boolean;
   files: OpenAIFile[];
   showMore?: boolean;
+  onDownload?: (fileId: string) => void;
   onDelete?: (file: OpenAIFile) => void;
 }
 
@@ -20,7 +22,7 @@ const bytesFormatter = Intl.NumberFormat('en', {
   unitDisplay: 'narrow',
 });
 
-const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
+const Index: FC<Props> = ({ isLoading, files, showMore, onDownload, onDelete }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selected, setSelected] = useState<OpenAIFile>();
   return (
@@ -30,7 +32,7 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
           <tr
             className={clsx(
               'text-left [&>th]:whitespace-nowrap border-b',
-              '[&>th]:font-semibold [&>th]:leading-5 [&>th]:py-2 [&>th]:px-2.5'
+              '[&>th]:font-semibold [&>th]:leading-5 [&>th]:py-2 [&>th]:px-2'
             )}
           >
             <th className="w-px">ID</th>
@@ -39,14 +41,16 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
             <th className="w-px">Status</th>
             <th className="w-px">Created</th>
             <th className="w-px">Size</th>
-            {showMore && <th className="w-px">More</th>}
+            <th colSpan={showMore ? 2 : 1} className="w-px text-center">
+              More
+            </th>
           </tr>
         </thead>
         <tbody>
           {files.map((f) => (
             <tr
               key={f.id}
-              className="leading-5 text-left [&>td]:py-1.5 [&>td]:px-2.5 [&>td]:whitespace-nowrap border-b"
+              className="leading-5 text-left [&>td]:py-1.5 [&>td]:px-2 [&>td]:whitespace-nowrap border-b"
             >
               <td className="w-px">
                 <div className="flex justify-center">
@@ -58,6 +62,16 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
               <td className="w-px">{f.status}</td>
               <td className="w-px">{dayjs.unix(f.created_at).format('YYYY-MM-DD HH:mm:ss')}</td>
               <td className="w-px">{bytesFormatter.format(f.bytes)}</td>
+              <td className="w-px">
+                <div className="flex justify-center">
+                  <button
+                    type="button"
+                    className="w-5 h-5 rounded hover-theme hover:text-theme-700"
+                  >
+                    <IconDownload className="w-5 h-5" />
+                  </button>
+                </div>
+              </td>
               {showMore && (
                 <td className="w-px">
                   <div className="flex w-full justify-center">

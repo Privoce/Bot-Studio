@@ -42,7 +42,7 @@ const Home: NextPage = () => {
           <div className="flex-1" />
           <div className="relative flex">
             <Button type="button" variant="contained">
-              Upload File
+              Upload File (JSONL)
             </Button>
             <Upload accept="application/jsonl" onChange={onUpload} />
           </div>
