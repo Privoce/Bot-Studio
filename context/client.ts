@@ -56,8 +56,8 @@ export class OpenAIApi {
     return this.axios.post<OpenAIFile>('/v1/files', formData).then((res) => res.data);
   };
 
-  public retrieveFile = (fileId: string) =>
-    this.axios.get<string>(`/v1/files/${fileId}`).then((res) => res.data);
+  public retrieveFileContent = (fileId: string) =>
+    this.axios.get<string>(`/v1/files/${fileId}/content`).then((res) => res.data);
 
   public deleteFile = (fileId: string) =>
     this.axios.delete<DeleteFileResponse>(`/v1/files/${fileId}`).then((res) => res.data);

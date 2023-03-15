@@ -44,7 +44,7 @@ const Home: NextPage = () => {
             <Button type="button" variant="contained">
               Upload File (JSONL)
             </Button>
-            <Upload accept="application/jsonl" onChange={onUpload} />
+            <Upload accept="application/jsonl+json" onChange={onUpload} />
           </div>
         </H2>
         <FilesTable

@@ -1,17 +1,19 @@
-import { FC, useState } from 'react';
+import { FC, useState, MouseEvent } from 'react';
 import { OpenAIFile } from 'openai';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
+import { useMutation } from '@tanstack/react-query';
 import Copy5 from '../button/copy-5';
 import ButtonMore from './button-more';
 import Dialog from '../../lib/dialog';
 import IconDownload from '../../assets/material/download_FILL0_wght400_GRAD0_opsz20.svg';
+import { useOpenai } from '../../context/openai';
+import { download } from '../utils';
 
 interface Props {
   isLoading?: boolean;
   files: OpenAIFile[];
   showMore?: boolean;
-  onDownload?: (fileId: string) => void;
   onDelete?: (file: OpenAIFile) => void;
 }
 
@@ -22,9 +24,23 @@ const bytesFormatter = Intl.NumberFormat('en', {
   unitDisplay: 'narrow',
 });
 
-const Index: FC<Props> = ({ isLoading, files, showMore, onDownload, onDelete }) => {
+const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selected, setSelected] = useState<OpenAIFile>();
+  const { openai } = useOpenai();
+  const { mutate: downloadMut } = useMutation(openai.retrieveFileContent, {
+    onSuccess: (data, id) => {
+      const file = files.find((f) => f.id === id);
+      if (!file) return;
+      download(data, file.filename);
+    },
+  });
+
+  const onDownload = (f: OpenAIFile) => (e: MouseEvent) => {
+    e.stopPropagation();
+    downloadMut(f.id);
+  };
+
   return (
     <div className="overflow-x-auto text-sm">
       <table>
@@ -67,6 +83,7 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDownload, onDelete }) 
                   <button
                     type="button"
                     className="w-5 h-5 rounded hover-theme hover:text-theme-700"
+                    onClick={onDownload(f)}
                   >
                     <IconDownload className="w-5 h-5" />
                   </button>
