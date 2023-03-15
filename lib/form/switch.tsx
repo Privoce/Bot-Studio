@@ -5,9 +5,9 @@ import { Size } from './types';
 
 interface Props {
   size?: Size;
-  checked: boolean;
+  checked?: boolean;
   className?: string;
-  onChange: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
 }
 
 const OUTER_SIZE_STYLE: Record<Size, string> = {

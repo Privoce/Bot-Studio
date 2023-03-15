@@ -15,6 +15,7 @@ module.exports = {
     extend: {
       colors: {
         theme: colors.emerald,
+        error: colors.red,
       },
       spacing: {
         4.5: '1.125rem',

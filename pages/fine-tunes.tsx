@@ -1,16 +1,19 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 import type { NextPage } from 'next';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { CreateFineTuneRequest } from 'openai';
 import Dashboard from '../layouts/dashboard';
 import { useOpenai } from '../context/openai';
 import H2 from '../components/heading/h2';
 import { useFineTuneStore } from '../store/use-fine-tune-store';
 import FineTunes from '../components/fine-tunes/fine-tunes';
 import Button from '../lib/form/button';
+import ModalCreateFineTune from '../components/fine-tunes/modal-create-fine-tune';
 
 const Home: NextPage = () => {
   const { openai } = useOpenai();
   const { fineTunes, setFineTunes } = useFineTuneStore((s) => s);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const createMut = useMutation(openai.createFineTune);
 
   useQuery({
@@ -22,8 +25,10 @@ const Home: NextPage = () => {
 
   const onClick = (e: MouseEvent) => {
     e.stopPropagation();
-    createMut.mutate({ model: '', training_file: '' });
+    setShowCreateModal(true);
   };
+
+  const onCreate = (dto: CreateFineTuneRequest) => createMut.mutate(dto);
 
   return (
     <Dashboard>
@@ -37,6 +42,11 @@ const Home: NextPage = () => {
           </div>
         </H2>
         <FineTunes fineTunes={fineTunes} />
+        <ModalCreateFineTune
+          visible={showCreateModal}
+          onCancel={() => setShowCreateModal(false)}
+          onCreate={onCreate}
+        />
       </div>
     </Dashboard>
   );

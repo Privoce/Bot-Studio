@@ -13,7 +13,11 @@ const Index: FC<Props> = ({ copyText }) => {
   };
 
   return (
-    <button type="button" className="w-5 h-5" onClick={onClick}>
+    <button
+      type="button"
+      className="w-5 h-5 rounded-md hover-theme hover:text-theme-700"
+      onClick={onClick}
+    >
       <IconCopy className="w-5 h-5" />
     </button>
   );

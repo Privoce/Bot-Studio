@@ -2,7 +2,7 @@ import { StylesConfig } from 'react-select';
 import { Size } from './types';
 
 const colors = {
-  theme500: '#EAAA08',
+  theme500: '#10b981',
   gray50: '#F9FAFB',
   gray100: '#F2F4F7',
   gray200: '#EAECF0',
@@ -39,8 +39,12 @@ export function getStyles(size: Size): StylesConfig<Option> {
       padding: 0,
       minHeight: MIN_HEIGHT[size],
       border: isFocused ? `1px solid ${colors.theme500}` : `1px solid ${colors.gray200}`,
-      backgroundColor: colors.gray50,
       outline: isFocused ? `1px solid ${colors.theme500}` : 'none',
+      '&:hover': {
+        border: isFocused ? `1px solid ${colors.theme500}` : `1px solid ${colors.gray200}`,
+        outline: isFocused ? `1px solid ${colors.theme500}` : 'none',
+      },
+      backgroundColor: colors.gray50,
       '.dark &': {
         border: isFocused ? `1px solid ${colors.theme500}` : `1px solid ${colors.gray700}`,
         outline: isFocused ? `1px solid ${colors.theme500}` : 'none',
