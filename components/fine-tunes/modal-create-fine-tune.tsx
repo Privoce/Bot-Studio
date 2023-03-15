@@ -174,7 +174,13 @@ const Index: FC<Props> = ({ visible, onCancel, onCreate }) => {
               errorMessage={errors.compute_classification_metrics?.message}
             >
               <div className="flex items-center h-8">
-                <Switch size="lg" />
+                <Controller
+                  control={control}
+                  name="compute_classification_metrics"
+                  render={({ field: { value, onChange } }) => (
+                    <Switch size="lg" checked={value ?? undefined} onChange={onChange} />
+                  )}
+                />
               </div>
             </Field>
             <Field
