@@ -10,6 +10,7 @@ interface Store {
   setFineTune: (fineTune: FineTune) => void;
   setFineTunes: (fineTunes: FineTune[]) => void;
   setEvents: (fineTuneId: string, events: FineTuneEvent[]) => void;
+  addFile: (file: OpenAIFile) => void;
   setFiles: (files: OpenAIFile[]) => void;
   removeFile: (fileId: string) => void;
 }
@@ -30,6 +31,10 @@ export const useFineTuneStore = create(
     setEvents: (fineTuneId, events) =>
       set((state) => {
         state.events[fineTuneId] = events;
+      }),
+    addFile: (file) =>
+      set((state) => {
+        state.files.push(file);
       }),
     setFiles: (files) =>
       set((state) => {
