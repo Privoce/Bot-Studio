@@ -1,13 +1,12 @@
 import { FC, MouseEvent, useState } from 'react';
 import clsx from 'clsx';
 import { Model } from 'openai';
-import copy from 'copy-to-clipboard';
 import { useMutation } from '@tanstack/react-query';
-import IconCopy from '../../assets/material/content_copy_FILL0_wght400_GRAD0_opsz20.svg';
 import IconDelete from '../../assets/material/delete_FILL0_wght400_GRAD0_opsz20.svg';
 import Dialog from '../../lib/dialog';
 import { useOpenai } from '../../context/openai';
 import { getSuffix } from '../utils';
+import Copy5 from '../button/copy-5';
 
 interface Props {
   models: Model[];
@@ -22,11 +21,6 @@ const Index: FC<Props> = ({ models, onDelete }) => {
     e.stopPropagation();
     setSelected(m);
     setShowDeleteDialog(true);
-  };
-
-  const onClickCopy = (id: string) => (e: MouseEvent) => {
-    e.stopPropagation();
-    copy(id);
   };
 
   const { openai } = useOpenai();
@@ -62,9 +56,7 @@ const Index: FC<Props> = ({ models, onDelete }) => {
             >
               <td className="w-px">
                 <div className="flex w-full justify-center">
-                  <button type="button" className="w-5 h-5" onClick={onClickCopy(m.id)}>
-                    <IconCopy className="w-5 h-5" />
-                  </button>
+                  <Copy5 copyText={m.id} />
                 </div>
               </td>
               <td className="w-px">{m.id.split(':')[0]}</td>
