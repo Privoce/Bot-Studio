@@ -1,41 +1,25 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
 import Dashboard from '../layouts/dashboard';
-import Button from '../lib/form/button';
 import ChatWindow from '../components/chat/chat-window';
 import { useChatStore } from '../store/use-chat-store';
+import ConfigBar from '../components/chat/config-bar';
+import InputBar from '../components/chat/input-bar';
 
 const Home: NextPage = () => {
-  const [value, setValue] = useState('');
+  const list = useChatStore((s) => s.list);
 
-  useChatStore();
   return (
     <Dashboard>
       <div className="flex h-full">
-        <div className="h-full flex-1 flex flex-col justify-start">
-          <div className="flex grow shrink overflow-x-auto divide-x">
-            <ChatWindow />
-            <ChatWindow />
-            <ChatWindow />
+        <div className="h-full flex-1 flex flex-col">
+          <div className="w-[calc(100vw-240px-288px)] overflow-x-auto divide-x grow shrink flex">
+            {list.map((chatId) => (
+              <ChatWindow key={chatId} chatId={chatId} />
+            ))}
           </div>
-          <div className="relative shrink-0 grow-0 min-h-[52px] flex items-center px-3">
-            <div className="absolute top-0 right-0 left-0 border-t" />
-            <input
-              value={value}
-              placeholder="Type and press enter"
-              onChange={(e) => setValue(e.target.value)}
-              className="focus:outline-none border h-8 rounded-lg w-full px-2.5 text-sm"
-            />
-          </div>
+          <InputBar />
         </div>
-        <div className="relative h-full w-60">
-          <div className="absolute left-0 top-0 bottom-0 border-l" />
-          <div className="p-4">
-            <Button type="button" variant="contained" className="w-full">
-              Add Compare Window
-            </Button>
-          </div>
-        </div>
+        <ConfigBar />
       </div>
     </Dashboard>
   );

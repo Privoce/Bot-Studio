@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import IconDelete from '../../assets/material/delete_FILL0_wght400_GRAD0_opsz20.svg';
 import Dialog from '../../lib/dialog';
 import { useOpenai } from '../../context/openai';
-import { getSuffix } from '../utils';
+import { getSuffix } from '../../utils/file';
 import Copy5 from '../button/copy-5';
 
 interface Props {

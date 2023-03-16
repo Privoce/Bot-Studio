@@ -8,7 +8,7 @@ import ButtonMore from './button-more';
 import Dialog from '../../lib/dialog';
 import IconDownload from '../../assets/material/download_FILL0_wght400_GRAD0_opsz20.svg';
 import { useOpenai } from '../../context/openai';
-import { download } from '../utils';
+import { download } from '../../utils/file';
 
 interface Props {
   isLoading?: boolean;

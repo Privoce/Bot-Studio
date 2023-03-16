@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useMutation } from '@tanstack/react-query';
 import IconEvent from '../../assets/material/event_FILL0_wght400_GRAD0_opsz20.svg';
 import IconFile from '../../assets/material/article_FILL0_wght400_GRAD0_opsz20.svg';
-import { getSuffix } from '../utils';
+import { getSuffix } from '../../utils/file';
 import ButtonMore from './button-more';
 import DrawerEvents from './drawer-events';
 import { useOpenai } from '../../context/openai';

@@ -4,7 +4,7 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { object, string, number, boolean, array } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Modal from '../../lib/modal';
-import Close8 from '../button/close-8';
+import Close7 from '../button/close-7';
 import Field from '../../lib/form/field';
 import Input from '../../lib/form/input';
 import Select from '../../lib/form/select';
@@ -118,7 +118,7 @@ const Index: FC<Props> = ({ visible, onCancel, onCreate }) => {
           <div className="h-13 flex items-center justify-center text-xl font-medium px-13">
             Create Fine-tune
           </div>
-          <Close8 className="absolute right-2.5 top-2.5" onClick={onCancel} />
+          <Close7 className="absolute right-2.5 top-2.5" onClick={onCancel} />
         </div>
         <form className="px-4 sm:px-6 pb-6" onSubmit={handleSubmit(onSubmit)}>
           <Field label="Training file" errorMessage={errors.training_file?.message}>
@@ -202,8 +202,11 @@ const Index: FC<Props> = ({ visible, onCancel, onCreate }) => {
           >
             <div className="space-y-3">
               {fields.map((field, i) => (
-                <Field errorMessage={errors.classification_betas?.[i]?.value?.message}>
-                  <div key={field.id} className="flex space-x-3">
+                <Field
+                  key={field.id}
+                  errorMessage={errors.classification_betas?.[i]?.value?.message}
+                >
+                  <div className="flex space-x-3">
                     <Input
                       className="w-full"
                       type="number"

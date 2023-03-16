@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { FineTuneEvent } from 'openai';
 import dayjs from 'dayjs';
 import Drawer from '../drawer';
-import Close8 from '../button/close-8';
+import Close7 from '../button/close-7';
 import Spin from '../../lib/loading/spin';
 import Refresh8 from '../button/refresh-8';
 
@@ -17,9 +17,9 @@ interface Props {
 const Index: FC<Props> = ({ isLoading, events, visible, onCancel, onRefresh }) => (
   <Drawer visible={visible} onClose={onCancel} placement="right">
     <div className="relative bg-white w-screen sm:w-96 overflow-y-auto">
-      <div className="z-10 sticky top-0 bg-white text-xl font-medium pl-4 pr-2.5 h-13 flex items-center justify-between">
+      <div className="z-10 sticky top-0 bg-white text-lg font-medium pl-4 pr-2.5 h-13 flex items-center justify-between">
         <div>Fine-tune Events</div>
-        <Close8 onClick={onCancel} />
+        <Close7 onClick={onCancel} />
         <div className="border-b absolute bottom-0 left-0 right-0" />
       </div>
       <div className="text-sm px-4 space-y-2 pt-2">

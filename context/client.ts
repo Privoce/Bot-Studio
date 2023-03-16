@@ -8,6 +8,8 @@ import {
   ListFilesResponse,
   DeleteFileResponse,
   OpenAIFile,
+  CreateCompletionRequest,
+  CreateCompletionResponse,
 } from 'openai';
 import { hasText } from '../utils/string';
 
@@ -61,4 +63,11 @@ export class OpenAIApi {
 
   public deleteFile = (fileId: string) =>
     this.axios.delete<DeleteFileResponse>(`/v1/files/${fileId}`).then((res) => res.data);
+
+  public createCompletion = (dto: CreateCompletionRequest) =>
+    this.axios
+      .post<CreateCompletionResponse>('/v1/completions', dto, {
+        responseType: dto.stream ? 'stream' : undefined,
+      })
+      .then((res) => res.data);
 }
