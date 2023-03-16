@@ -13,6 +13,7 @@ export interface PromptMessage {
   type: 'prompt';
   id: string;
   content: string;
+  createdAt: number;
 }
 
 export interface CompletionMessage {

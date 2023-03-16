@@ -80,6 +80,9 @@ export const useChatStore = create(
       }),
     endCompletion: (message) =>
       set((state) => {
+        if (state.messages[message.id]) {
+          (state.messages[message.id]! as CompletionMessage).duration = message.duration;
+        }
         if (state.chats[message.chatId]) {
           // remove pending prompt
           state.chats[message.chatId]!.pendingPrompts = state.chats[

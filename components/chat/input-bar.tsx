@@ -12,7 +12,7 @@ const Index: FC<Props> = () => {
   const addPrompt = useChatStore((s) => s.addPrompt);
   const onSend = async (e: MouseEvent) => {
     e.stopPropagation();
-    addPrompt({ type: 'prompt', id: uuidv4(), content: input });
+    addPrompt({ type: 'prompt', id: uuidv4(), content: input, createdAt: Date.now() });
     setInput('');
   };
 
