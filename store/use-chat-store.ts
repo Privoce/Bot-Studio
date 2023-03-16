@@ -2,24 +2,30 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { CreateCompletionRequest } from 'openai';
 import { Dictionary } from '../types/common';
-import { Chat, ChatMessage, getDefaultChat } from '../types/chat';
+import { Chat, ChatMessage, CompletionMessage, getDefaultChat, PromptMessage } from '../types/chat';
 
 type Settings = Omit<CreateCompletionRequest, 'model' | 'prompt'>;
 
 const DEFAULT_CHAT = getDefaultChat();
 
 interface Store {
-  settings: Settings;
-  list: string[];
   chats: Dictionary<Chat>;
-  messages: Dictionary<ChatMessage[]>;
+  messages: Dictionary<ChatMessage>;
+  chatIds: string[];
+  settings: Settings;
   addChat: (chat: Chat) => void;
   removeChat: (chatId: string) => void;
-  addMessage: (message: ChatMessage) => void;
+  addPrompt: (message: PromptMessage) => void;
+  startCompletion: (message: CompletionMessage) => void;
+  updateCompletion: (message: { id: string; content: string }) => void;
+  endCompletion: (message: CompletionMessage) => void;
 }
 
 export const useChatStore = create(
   immer<Store>((set) => ({
+    chats: { [DEFAULT_CHAT.id]: DEFAULT_CHAT },
+    messages: {},
+    chatIds: [DEFAULT_CHAT.id],
     settings: {
       suffix: undefined,
       max_tokens: 16,
@@ -36,23 +42,50 @@ export const useChatStore = create(
       logit_bias: undefined,
       user: undefined,
     },
-    list: [DEFAULT_CHAT.id],
-    chats: { [DEFAULT_CHAT.id]: DEFAULT_CHAT },
-    messages: {},
     addChat: (chat) =>
       set((state) => {
-        state.list.push(chat.id);
+        state.chatIds.push(chat.id);
         state.chats[chat.id] = chat;
       }),
     removeChat: (chatId) =>
       set((state) => {
-        state.list = state.list.filter((id) => id !== chatId);
+        // delete message
+        state.chats[chatId]?.messages.forEach((messageId) => {
+          if (state.messages[messageId]?.type === 'completion') {
+            delete state.messages[messageId];
+          }
+        });
+        // delete chat
+        state.chatIds = state.chatIds.filter((id) => id !== chatId);
         delete state.chats[chatId];
-        delete state.messages[chatId];
       }),
-    addMessage: (message) =>
+    addPrompt: (message) =>
       set((state) => {
-        state.messages[message.chatId] = [message];
+        state.messages[message.id] = message;
+        state.chatIds.forEach((chatId) => {
+          state.chats[chatId]?.messages.push(message.id);
+          state.chats[chatId]?.pendingPrompts.push(message.id);
+        });
+      }),
+    startCompletion: (message) =>
+      set((state) => {
+        state.messages[message.id] = message;
+        state.chats[message.chatId]?.messages.push(message.id);
+      }),
+    updateCompletion: (message) =>
+      set((state) => {
+        if (state.messages[message.id]) {
+          state.messages[message.id]!.content += message.content;
+        }
+      }),
+    endCompletion: (message) =>
+      set((state) => {
+        if (state.chats[message.chatId]) {
+          // remove pending prompt
+          state.chats[message.chatId]!.pendingPrompts = state.chats[
+            message.chatId
+          ]!.pendingPrompts.filter((pid) => pid !== message.promptId);
+        }
       }),
   }))
 );

@@ -1,36 +1,19 @@
-import { FC, MouseEvent, useRef, useState } from 'react';
-import { CreateCompletionRequest, CreateCompletionResponse } from 'openai';
+import { FC, MouseEvent, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Input from '../../lib/form/input';
 import Button from '../../lib/form/button';
-import { useOpenai } from '../../context/openai';
-import { useOpenaiStream } from '../../hooks/use-openai-stream';
+import { hasText } from '../../utils/string';
+import { useChatStore } from '../../store/use-chat-store';
 
 interface Props {}
 
 const Index: FC<Props> = () => {
   const [input, setInput] = useState('');
-  const ref = useRef<string>('');
-  const [result, setResult] = useState('');
-  const { config } = useOpenai();
-  const { mutateAsync, isLoading } = useOpenaiStream(config?.apiKey);
+  const addPrompt = useChatStore((s) => s.addPrompt);
   const onSend = async (e: MouseEvent) => {
     e.stopPropagation();
-    await mutateAsync<CreateCompletionRequest>({
-      url: 'https://api.openai.com/v1/completions',
-      body: {
-        model: 'text-davinci-003',
-        prompt: input,
-        stream: true,
-        max_tokens: 64,
-        echo: false,
-      },
-      onmessage: (event) => {
-        if (event.data === '[DONE]') return;
-        const data = JSON.parse(event.data) as CreateCompletionResponse;
-        ref.current += data.choices[0].text;
-        setResult(ref.current);
-      },
-    });
+    addPrompt({ type: 'prompt', id: uuidv4(), content: input });
+    setInput('');
   };
 
   return (
@@ -45,8 +28,8 @@ const Index: FC<Props> = () => {
       <Button
         type="button"
         variant="contained"
-        disabled={isLoading}
         className="ml-3"
+        disabled={!hasText(input)}
         onClick={onSend}
       >
         Send

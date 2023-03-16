@@ -6,14 +6,13 @@ import ConfigBar from '../components/chat/config-bar';
 import InputBar from '../components/chat/input-bar';
 
 const Home: NextPage = () => {
-  const list = useChatStore((s) => s.list);
-
+  const chatIds = useChatStore((s) => s.chatIds);
   return (
     <Dashboard>
       <div className="flex h-full">
         <div className="h-full flex-1 flex flex-col">
           <div className="w-[calc(100vw-240px-288px)] overflow-x-auto divide-x grow shrink flex">
-            {list.map((chatId) => (
+            {chatIds.map((chatId) => (
               <ChatWindow key={chatId} chatId={chatId} />
             ))}
           </div>
