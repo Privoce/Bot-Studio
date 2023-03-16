@@ -45,7 +45,7 @@ const Index: FC<Props> = () => {
       <div className="flex flex-col items-center">
         <div className="flex items-center text-theme-500">
           <IconOpenAI className="w-9 h-9" />
-          <div className="text-2xl font-medium pl-3">OpenAI Dashboard</div>
+          <div className="text-2xl font-medium pl-3">Bot Studio</div>
         </div>
         <form className="mt-6 w-80" onSubmit={handleSubmit(onSubmit)}>
           <Field errorMessage={errors.originationName?.message}>
