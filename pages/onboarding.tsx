@@ -48,7 +48,18 @@ const Index: FC<Props> = () => {
           <div className="text-2xl font-medium pl-3">Bot Studio</div>
         </div>
         <form className="mt-6 w-80" onSubmit={handleSubmit(onSubmit)}>
-          <div className="text-sm text-color-secondary">We need a valid Organization ID, found in your <a target="_blank" className="text-theme-500 hover:underline" href="https://platform.openai.com/account/org-settings">API account settings</a>, to grant access</div>
+          <div className="text-sm text-color-secondary">
+            We need a valid Organization ID, found in your{' '}
+            <a
+              target="_blank"
+              rel="noreferrer"
+              className="text-theme-500 hover:underline"
+              href="https://platform.openai.com/account/org-settings"
+            >
+              API account settings
+            </a>
+            , to grant access
+          </div>
           <Field errorMessage={errors.originationName?.message}>
             <Input
               size="lg"
