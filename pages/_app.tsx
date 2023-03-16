@@ -7,6 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import calendar from 'dayjs/plugin/calendar';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { OpenaiContextProvider } from '../context/openai';
+import Gtag from '../components/track/gtag';
 
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
@@ -22,13 +23,16 @@ function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: DehydratedS
   const [queryClient] = useState(createQueryClient);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <OpenaiContextProvider>
-          <Component {...pageProps} />
-        </OpenaiContextProvider>
-      </Hydrate>
-    </QueryClientProvider>
+    <>
+      <Gtag tagId="G-3CFLVWPL2J" />
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <OpenaiContextProvider>
+            <Component {...pageProps} />
+          </OpenaiContextProvider>
+        </Hydrate>
+      </QueryClientProvider>
+    </>
   );
 }
 

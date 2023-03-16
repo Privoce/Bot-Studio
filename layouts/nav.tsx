@@ -14,7 +14,7 @@ const Index: FC<Props> = () => (
     <div className="border-r absolute right-0 top-0 bottom-0" />
     <div className="text-theme-500 h-13 flex justify-center items-center">
       <IconOpenAI className="w-6 h-6" />
-      <div className="pl-2 font-medium text-base">OpenAI Dashboard</div>
+      <div className="pl-2 font-medium text-base">Bot Studio</div>
     </div>
     <NavItem href="/" text="Chat" icon={IconChat} />
     <NavItem href="/models" text="Models" icon={IconModel} />
