@@ -3,6 +3,7 @@ import NavItem from './nav-item';
 import IconChat from '../assets/material/chat_FILL0_wght400_GRAD0_opsz20.svg';
 import IconModel from '../assets/material/widgets_FILL0_wght400_GRAD0_opsz20.svg';
 import IconOpenAI from '../assets/logo/openai.svg';
+import IconGithub from '../assets/logo/github-32.svg';
 // import IconSettings from '../assets/material/settings_FILL0_wght400_GRAD0_opsz20.svg';
 import IconFolder from '../assets/material/folder_FILL0_wght400_GRAD0_opsz20.svg';
 import IconTune from '../assets/material/tune_FILL0_wght400_GRAD0_opsz20.svg';
@@ -21,8 +22,18 @@ const Index: FC<Props> = () => (
     <NavItem href="/files" text="Files" icon={IconFolder} />
     <NavItem href="/fine-tunes" text="Fine tune" icon={IconTune} />
     {/* <NavItem href="/settings" text="Settings" icon={IconSettings} /> */}
-    <div className="flex-1" />
-    <div className="px-4 h-13 flex items-center">Github Link</div>
+    <div className="mt-1.5 mb-[5px] border-b mx-3" />
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://github.com/Privoce/Bot-Studio"
+      className="h-10 pl-1 flex items-center hover-theme hover:text-theme-700"
+    >
+      <div className="w-10 h-10 p-2.5">
+        <IconGithub className="w-5 h-5" />
+      </div>
+      <div className="text-sm font-medium">Privoce/Bot-Studio</div>
+    </a>
   </nav>
 );
 
