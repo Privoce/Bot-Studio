@@ -1,19 +1,38 @@
-import { FC, useState, MouseEvent, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { object, string, number, boolean, array } from 'yup';
+import { FC, MouseEvent, useEffect } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { object, string, number, array } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '../../lib/form/button';
 import Field from '../../lib/form/field';
-import Textarea from '../../lib/form/textarea';
+// import Textarea from '../../lib/form/textarea';
 import Input from '../../lib/form/input';
 import { CompletionConfig, getDefaultChat } from '../../types/chat';
 import { useChatStore } from '../../store/use-chat-store';
 
 interface Props {}
 
+type DTO = Omit<CompletionConfig, 'stop'> & {
+  stop?: { value: string }[];
+};
+
+function configToDTO(config: CompletionConfig): DTO {
+  if (!config.stop) return { ...config, stop: undefined };
+  return {
+    ...config,
+    stop: Array.isArray(config.stop)
+      ? config.stop.map((value) => ({ value }))
+      : [{ value: config.stop }],
+  };
+}
+
+function DTOToConfig(dto: DTO): CompletionConfig {
+  if (!dto.stop) return { ...dto, stop: undefined };
+  return { ...dto, stop: dto.stop.map((i) => i.value) };
+}
+
 const Index: FC<Props> = () => {
   // eslint-disable-next-line no-template-curly-in-string
-  const [promptTemplate, setPromptTemplate] = useState('${input_text}');
+  // const [promptTemplate, setPromptTemplate] = useState('${input_text}');
 
   const addChat = useChatStore((s) => s.addChat);
   const onAddChat = (e: MouseEvent) => {
@@ -29,18 +48,19 @@ const Index: FC<Props> = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<CompletionConfig>({
-    defaultValues: globalConfig,
+    control,
+  } = useForm<DTO>({
+    defaultValues: configToDTO(globalConfig),
     resolver: yupResolver(
       object({
         suffix: string()
           .transform((v) => (!v || v.length === 0 ? undefined : v))
           .notRequired(),
         max_token: number()
-          .transform((v) => (Number.isNaN(v) ? undefined : v))
           .integer()
           .positive()
           .max(4096)
+          .transform((v) => (Number.isNaN(v) ? undefined : v))
           .notRequired(),
         temperature: number()
           .transform((v) => (Number.isNaN(v) ? undefined : v))
@@ -76,18 +96,25 @@ const Index: FC<Props> = () => {
           .positive()
           .min(1)
           .notRequired(),
+        stop: array()
+          .transform((v) => (!Array.isArray(v) || v.length === 0 ? undefined : v))
+          .of(object({ value: string().required() }))
+          .notRequired(),
       })
     ),
   });
 
+  const { fields, append, remove } = useFieldArray({ control, name: 'stop' });
+
   useEffect(() => {
-    reset(globalConfig);
+    reset(configToDTO(globalConfig));
     // eslint-disable-next-line
   }, [globalConfig]);
 
-  const onUpdate = (config: CompletionConfig) => {
+  const onUpdate = (dto: DTO) => {
     // todo: toast.success
-    updateGlobalConfig(config);
+    console.log(dto);
+    updateGlobalConfig(DTOToConfig(dto));
   };
 
   return (
@@ -141,6 +168,23 @@ const Index: FC<Props> = () => {
             <Input className="w-full" type="number" {...register('best_of')} />
           </Field>
         </div>
+        <Field label="Stop" errorMessage={errors.stop?.message}>
+          <div className="space-y-3">
+            {fields.map((field, i) => (
+              <Field key={field.id} errorMessage={errors.stop?.[i]?.value?.message}>
+                <div className="flex space-x-3">
+                  <Input className="w-full" type="text" {...register(`stop.${i}.value`)} />
+                  <Button type="button" variant="outlined" onClick={() => remove(i)}>
+                    Remove
+                  </Button>
+                </div>
+              </Field>
+            ))}
+            <Button type="button" variant="outlined" onClick={() => append({ value: '' })}>
+              Add Stop world
+            </Button>
+          </div>
+        </Field>
         <div className="pt-3 pb-4">
           <Button type="submit" variant="contained" className="w-full">
             Update Completion Config
