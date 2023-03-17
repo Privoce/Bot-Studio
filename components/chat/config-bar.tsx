@@ -56,11 +56,11 @@ const Index: FC<Props> = () => {
         suffix: string()
           .transform((v) => (!v || v.length === 0 ? undefined : v))
           .notRequired(),
-        max_token: number()
+        max_tokens: number()
+          .transform((v) => (Number.isNaN(v) ? undefined : v))
           .integer()
           .positive()
           .max(4096)
-          .transform((v) => (Number.isNaN(v) ? undefined : v))
           .notRequired(),
         temperature: number()
           .transform((v) => (Number.isNaN(v) ? undefined : v))
