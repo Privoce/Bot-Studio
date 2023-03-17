@@ -56,7 +56,7 @@ const Index: FC<Props> = () => {
         suffix: string()
           .transform((v) => (!v || v.length === 0 ? undefined : v))
           .notRequired(),
-        max_token: number()
+        max_tokens: number()
           .transform((v) => (Number.isNaN(v) ? undefined : v))
           .integer()
           .positive()
@@ -113,6 +113,7 @@ const Index: FC<Props> = () => {
 
   const onUpdate = (dto: DTO) => {
     // todo: toast.success
+    console.log(dto);
     updateGlobalConfig(DTOToConfig(dto));
   };
 
