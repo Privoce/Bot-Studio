@@ -113,7 +113,6 @@ const Index: FC<Props> = () => {
 
   const onUpdate = (dto: DTO) => {
     // todo: toast.success
-    console.log(dto);
     updateGlobalConfig(DTOToConfig(dto));
   };
 
@@ -138,34 +137,44 @@ const Index: FC<Props> = () => {
         </Field>
         <div className="flex space-x-3">
           <Field label="Max Tokens" errorMessage={errors.max_tokens?.message}>
-            <Input className="w-full" type="number" {...register('max_tokens')} />
+            <Input className="w-full" type="number" step={1} {...register('max_tokens')} />
           </Field>
           <Field label="Temperature" errorMessage={errors.temperature?.message}>
-            <Input className="w-full" type="number" {...register('temperature')} />
+            <Input className="w-full" type="number" step={0.001} {...register('temperature')} />
           </Field>
         </div>
         <div className="flex space-x-3">
           <Field label="Top P" errorMessage={errors.top_p?.message}>
-            <Input className="w-full" type="number" {...register('top_p')} />
+            <Input className="w-full" type="number" step={0.001} {...register('top_p')} />
           </Field>
           <Field label="N" errorMessage={errors.n?.message}>
-            <Input className="w-full" type="number" {...register('n')} />
+            <Input className="w-full" type="number" step={1} {...register('n')} />
           </Field>
         </div>
         <div className="flex space-x-3">
           <Field label="Logprobs" errorMessage={errors.logprobs?.message}>
-            <Input className="w-full" type="number" {...register('logprobs')} />
+            <Input className="w-full" type="number" step={1} {...register('logprobs')} />
           </Field>
           <Field label="Presence Penalty" errorMessage={errors.presence_penalty?.message}>
-            <Input className="w-full" type="number" {...register('presence_penalty')} />
+            <Input
+              className="w-full"
+              type="number"
+              step={0.001}
+              {...register('presence_penalty')}
+            />
           </Field>
         </div>
         <div className="flex space-x-3">
           <Field label="Frequency Penalty" errorMessage={errors.frequency_penalty?.message}>
-            <Input className="w-full" type="number" {...register('frequency_penalty')} />
+            <Input
+              className="w-full"
+              type="number"
+              step={0.001}
+              {...register('frequency_penalty')}
+            />
           </Field>
           <Field label="Best of" errorMessage={errors.best_of?.message}>
-            <Input className="w-full" type="number" {...register('best_of')} />
+            <Input className="w-full" type="number" step={1} {...register('best_of')} />
           </Field>
         </div>
         <Field label="Stop" errorMessage={errors.stop?.message}>
@@ -181,7 +190,7 @@ const Index: FC<Props> = () => {
               </Field>
             ))}
             <Button type="button" variant="outlined" onClick={() => append({ value: '' })}>
-              Add Stop world
+              Add
             </Button>
           </div>
         </Field>

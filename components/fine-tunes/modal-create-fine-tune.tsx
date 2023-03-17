@@ -153,18 +153,28 @@ const Index: FC<Props> = ({ visible, onCancel, onCreate }) => {
           </div>
           <div className="flex flex-wrap space-x-3">
             <Field label="N Epochs" className="flex-1" errorMessage={errors.n_epochs?.message}>
-              <Input className="w-full" type="number" {...register('n_epochs')} />
+              <Input className="w-full" type="number" step={1} {...register('n_epochs')} />
             </Field>
             <Field label="Batch Size" className="flex-1">
-              <Input className="w-full" type="number" {...register('n_epochs')} />
+              <Input className="w-full" type="number" step={1} {...register('batch_size')} />
             </Field>
           </div>
           <div className="flex flex-wrap space-x-3">
             <Field label="Learning rate multiplier" className="flex-1">
-              <Input className="w-full" type="number" {...register('n_epochs')} />
+              <Input
+                className="w-full"
+                type="number"
+                step={0.001}
+                {...register('learning_rate_multiplier')}
+              />
             </Field>
             <Field label="Prompt loss weight" className="flex-1">
-              <Input className="w-full" type="number" {...register('n_epochs')} />
+              <Input
+                className="w-full"
+                type="number"
+                step={0.001}
+                {...register('prompt_loss_weight')}
+              />
             </Field>
           </div>
           <div className="flex flex-wrap space-x-3">
@@ -191,6 +201,7 @@ const Index: FC<Props> = ({ visible, onCancel, onCreate }) => {
               <Input
                 className="w-full"
                 type="number"
+                step={0.001}
                 {...register('classification_positive_class')}
               />
             </Field>
@@ -210,6 +221,7 @@ const Index: FC<Props> = ({ visible, onCancel, onCreate }) => {
                     <Input
                       className="w-full"
                       type="number"
+                      step={0.001}
                       {...register(`classification_betas.${i}.value`)}
                     />
                     <Button type="button" variant="outlined" onClick={() => remove(i)}>
