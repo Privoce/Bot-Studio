@@ -113,7 +113,6 @@ const Index: FC<Props> = () => {
 
   const onUpdate = (dto: DTO) => {
     // todo: toast.success
-    console.log(dto);
     updateGlobalConfig(DTOToConfig(dto));
   };
 
