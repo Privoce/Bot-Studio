@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { FineTune } from 'openai';
 import clsx from 'clsx';
 import { useMutation } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import IconEvent from '../../assets/material/event_FILL0_wght400_GRAD0_opsz20.svg';
 import IconFile from '../../assets/material/article_FILL0_wght400_GRAD0_opsz20.svg';
 import { getSuffix } from '../../utils/file';
@@ -89,8 +90,8 @@ const Index: FC<Props> = ({ fineTunes }) => {
               <td className="w-px">{f.model}</td>
               <td className="w-full">{getSuffix(f.fine_tuned_model)}</td>
               <td className="w-px">{f.status}</td>
-              <td className="w-px">{f.created_at}</td>
-              <td className="w-px">{f.updated_at}</td>
+              <td className="w-px">{dayjs.unix(f.created_at).format('YYYY-MM-DD HH:mm:ss')}</td>
+              <td className="w-px">{dayjs.unix(f.updated_at).format('YYYY-MM-DD HH:mm:ss')}</td>
               <td className="w-px">
                 <div className="flex w-full justify-center">
                   <button

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Model } from 'openai';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import Copy5 from '../button/copy-5';
 
 interface Props {
@@ -36,7 +37,7 @@ const Index: FC<Props> = ({ models }) => (
             </td>
             <td className="w-full">{m.id}</td>
             <td className="w-px">{m.owned_by}</td>
-            <td className="w-px">{new Date(m.created * 1000).toLocaleDateString()}</td>
+            <td className="w-px">{dayjs.unix(m.created).format('YYYY-MM-DD HH:mm:ss')}</td>
           </tr>
         ))}
       </tbody>

@@ -2,6 +2,7 @@ import { FC, MouseEvent, useState } from 'react';
 import clsx from 'clsx';
 import { Model } from 'openai';
 import { useMutation } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import IconDelete from '../../assets/material/delete_FILL0_wght400_GRAD0_opsz20.svg';
 import Dialog from '../../lib/dialog';
 import { useOpenai } from '../../context/openai';
@@ -62,7 +63,7 @@ const Index: FC<Props> = ({ models, onDelete }) => {
               <td className="w-px">{m.id.split(':')[0]}</td>
               <td className="w-full">{getSuffix(m.id)}</td>
               <td className="w-px">{m.owned_by}</td>
-              <td className="w-px">{new Date(m.created * 1000).toLocaleDateString()}</td>
+              <td className="w-px">{dayjs.unix(m.created).format('YYYY-MM-DD HH:mm:ss')}</td>
               <td className="w-px">
                 <div className="flex w-full justify-center">
                   <button
