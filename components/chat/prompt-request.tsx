@@ -12,6 +12,7 @@ interface Props {
 }
 
 const Index: FC<Props> = ({ chat, promptId, apiKey }) => {
+  const globalConfig = useChatStore((s) => s.globalConfig);
   const startCompletion = useChatStore((s) => s.startCompletion);
   const updateCompletion = useChatStore((s) => s.updateCompletion);
   const endCompletion = useChatStore((s) => s.endCompletion);
@@ -38,9 +39,9 @@ const Index: FC<Props> = ({ chat, promptId, apiKey }) => {
           body: {
             model: chat.model.id,
             prompt,
-            stream: true,
-            max_tokens: 64,
-            echo: false,
+            // user config
+            ...globalConfig,
+            ...chat.config,
           },
           onmessage: (e) => {
             if (e.data === '[DONE]') {

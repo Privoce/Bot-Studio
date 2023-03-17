@@ -1,10 +1,15 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { CreateCompletionRequest, Model } from 'openai';
+import { Model } from 'openai';
 import { Dictionary } from '../types/common';
-import { Chat, ChatMessage, CompletionMessage, getDefaultChat, PromptMessage } from '../types/chat';
-
-type Settings = Omit<CreateCompletionRequest, 'model' | 'prompt'>;
+import {
+  Chat,
+  ChatMessage,
+  CompletionConfig,
+  CompletionMessage,
+  getDefaultChat,
+  PromptMessage,
+} from '../types/chat';
 
 const DEFAULT_CHAT = getDefaultChat();
 
@@ -12,7 +17,8 @@ interface Store {
   chats: Dictionary<Chat>;
   messages: Dictionary<ChatMessage>;
   chatIds: string[];
-  settings: Settings;
+  globalConfig: CompletionConfig;
+  updateGlobalConfig: (config: CompletionConfig) => void;
   addChat: (chat: Chat) => void;
   removeChat: (chatId: string) => void;
   updateModel: (chatId: string, model: Model) => void;
@@ -27,22 +33,26 @@ export const useChatStore = create(
     chats: { [DEFAULT_CHAT.id]: DEFAULT_CHAT },
     messages: {},
     chatIds: [DEFAULT_CHAT.id],
-    settings: {
+    globalConfig: {
       suffix: undefined,
       max_tokens: 16,
-      temperature: 1,
-      top_p: 1,
-      n: 1,
+      temperature: undefined,
+      top_p: undefined,
+      n: undefined,
       stream: true,
       logprobs: undefined,
       echo: false,
       stop: undefined,
-      presence_penalty: 0,
-      frequency_penalty: 0,
-      best_of: 1, // must be greater than n
+      presence_penalty: undefined,
+      frequency_penalty: undefined,
+      best_of: undefined, // must be greater than n
       logit_bias: undefined,
       user: undefined,
     },
+    updateGlobalConfig: (config) =>
+      set((state) => {
+        state.globalConfig = config;
+      }),
     addChat: (chat) =>
       set((state) => {
         state.chatIds.push(chat.id);

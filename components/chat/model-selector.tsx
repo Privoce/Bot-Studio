@@ -101,15 +101,17 @@ const Index: FC<Props> = ({ value, onChange }) => {
     () => ({
       myModels: models
         .filter((m) => !official.includes(m.owned_by))
-        .sort((a, b) => a.created - b.created),
+        .sort((a, b) => a.id.localeCompare(b.id)),
       openai: models.filter((m) => m.owned_by === 'openai').sort((a, b) => a.created - b.created),
       openaiDev: models
         .filter((m) => m.owned_by === 'openai-dev')
-        .sort((a, b) => a.created - b.created),
+        .sort((a, b) => a.id.localeCompare(b.id)),
       openaiInternal: models
         .filter((m) => m.owned_by === 'openai-internal')
-        .sort((a, b) => a.created - b.created),
-      system: models.filter((m) => m.owned_by === 'system').sort((a, b) => a.created - b.created),
+        .sort((a, b) => a.id.localeCompare(b.id)),
+      system: models
+        .filter((m) => m.owned_by === 'system')
+        .sort((a, b) => a.id.localeCompare(b.id)),
     }),
     [models]
   );
