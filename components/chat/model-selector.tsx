@@ -140,7 +140,7 @@ const Index: FC<Props> = ({ value, onChange }) => {
       </button>
       {visible && (
         <div
-          className="z-50 bg-white shadow-2xl border mt-1.5 rounded-lg overflow-hidden py-1.5 w-[280px]"
+          className="z-50 bg-white shadow-2xl border mt-1.5 rounded-lg overflow-hidden py-1.5 w-[280px] max-h-[480px] overflow-y-auto"
           ref={refs.setFloating}
           {...getFloatingProps()}
           style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}

@@ -1,9 +1,9 @@
-import { CreateCompletionRequest } from 'openai';
+import { CreateCompletionRequest, Model } from 'openai';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface Chat {
   id: string;
-  modelId: string;
+  model: Model;
   config?: CreateCompletionRequest;
   pendingPrompts: string[];
   messages: string[];
@@ -30,7 +30,12 @@ export type ChatMessage = PromptMessage | CompletionMessage;
 export function getDefaultChat(): Chat {
   return {
     id: uuidv4(),
-    modelId: 'gpt-3.5-turbo',
+    model: {
+      id: 'gpt-3.5-turbo',
+      object: 'model',
+      created: 1677610602,
+      owned_by: 'openai',
+    },
     pendingPrompts: [],
     messages: [],
   };

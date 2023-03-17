@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { CreateCompletionRequest } from 'openai';
+import { CreateCompletionRequest, Model } from 'openai';
 import { Dictionary } from '../types/common';
 import { Chat, ChatMessage, CompletionMessage, getDefaultChat, PromptMessage } from '../types/chat';
 
@@ -15,6 +15,7 @@ interface Store {
   settings: Settings;
   addChat: (chat: Chat) => void;
   removeChat: (chatId: string) => void;
+  updateModel: (chatId: string, model: Model) => void;
   addPrompt: (message: PromptMessage) => void;
   startCompletion: (message: CompletionMessage) => void;
   updateCompletion: (message: { id: string; content: string }) => void;
@@ -58,6 +59,12 @@ export const useChatStore = create(
         // delete chat
         state.chatIds = state.chatIds.filter((id) => id !== chatId);
         delete state.chats[chatId];
+      }),
+    updateModel: (chatId, model) =>
+      set((state) => {
+        if (state.chats[chatId]) {
+          state.chats[chatId]!.model = model;
+        }
       }),
     addPrompt: (message) =>
       set((state) => {

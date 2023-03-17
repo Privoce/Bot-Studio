@@ -1,5 +1,4 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Model } from 'openai';
 import { useChatStore } from '../../store/use-chat-store';
 import ModelSelector from './model-selector';
 import Close8 from '../button/close-7';
@@ -14,9 +13,9 @@ interface Props {
 }
 
 const ChatWindow: FC<Props> = ({ chatId }) => {
-  const [model, setModel] = useState<Model>();
   const chat = useChatStore((s) => s.chats[chatId]);
   const removeChat = useChatStore((s) => s.removeChat);
+  const updateModel = useChatStore((s) => s.updateModel);
   const messages = useChatStore((s) => selectByIds(chat?.messages ?? [], s.messages));
   const { config } = useOpenai();
   const ref = useRef<HTMLDivElement>(null);
@@ -54,7 +53,7 @@ const ChatWindow: FC<Props> = ({ chatId }) => {
         <PromptRequest key={promptId} chatId={chatId} promptId={promptId} apiKey={config?.apiKey} />
       ))}
       <div className="z-10 sticky top-0 h-13 flex items-center px-2.5 bg-white">
-        <ModelSelector value={model} onChange={setModel} />
+        <ModelSelector value={chat.model} onChange={(m) => updateModel(chatId, m)} />
         <div className="flex-1" />
         <Close8 onClick={() => removeChat(chatId)} />
         <div className="absolute bottom-0 left-0 right-0 border-b" />
