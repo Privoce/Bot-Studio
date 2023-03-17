@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import {
   ListModelsResponse,
   ListFineTunesResponse,
@@ -11,6 +11,7 @@ import {
   CreateCompletionRequest,
   CreateCompletionResponse,
 } from 'openai';
+import Router from 'next/router';
 import { hasText } from '../utils/string';
 
 export class OpenAIApi {
@@ -27,6 +28,23 @@ export class OpenAIApi {
       baseURL: 'https://api.openai.com/',
       headers: { Authorization: `Bearer ${apiKey}` },
     });
+    this.axios.interceptors.response.use(
+      (response) => response,
+      (reject: AxiosError) => {
+        const { response } = reject;
+        if (!response) {
+          console.error('NETWORK_ERR:', reject);
+          return Promise.reject(reject);
+        }
+        // 401 Unauthorized redirect
+        if (response.status === 401 && !Router.asPath.includes('onboarding')) {
+          Router.push('/onboarding');
+          return Promise.reject(reject);
+        }
+        // todo: toast.error message
+        return Promise.reject(reject);
+      }
+    );
   }
 
   public listModels = () =>
