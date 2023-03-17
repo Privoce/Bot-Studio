@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useChatStore } from '../../store/use-chat-store';
 import ModelSelector from './model-selector';
 import Close8 from '../button/close-7';
@@ -21,14 +21,14 @@ const ChatWindow: FC<Props> = ({ chatId }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   // add scroll listener and set lock status
-  const [scrollLocked, setScrollLocked] = useState(false);
+  const scrollLocked = useRef(false);
   useEffect(() => {
     const container = ref.current;
     if (!container) return;
     const onScroll = () => {
       const { scrollHeight, scrollTop, clientHeight } = container;
       const scrollBottom = scrollHeight - scrollTop - clientHeight;
-      setScrollLocked(scrollBottom > 320);
+      scrollLocked.current = scrollBottom > 320;
     };
     container.addEventListener('scroll', onScroll);
     return () => container.removeEventListener('scroll', onScroll);
@@ -39,8 +39,8 @@ const ChatWindow: FC<Props> = ({ chatId }) => {
   useEffect(() => {
     const container = ref.current;
     if (!container) return;
-    if (scrollLocked) return;
     window.setTimeout(() => {
+      if (scrollLocked.current) return;
       container.scrollTop = container.scrollHeight - container.clientHeight;
     }, 200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
