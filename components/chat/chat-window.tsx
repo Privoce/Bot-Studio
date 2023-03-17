@@ -50,7 +50,7 @@ const ChatWindow: FC<Props> = ({ chatId }) => {
   return (
     <div className="flex-1 min-w-[340px] overflow-y-auto" ref={ref}>
       {chat.pendingPrompts.map((promptId) => (
-        <PromptRequest key={promptId} chatId={chatId} promptId={promptId} apiKey={config?.apiKey} />
+        <PromptRequest key={promptId} chat={chat} promptId={promptId} apiKey={config?.apiKey} />
       ))}
       <div className="z-10 sticky top-0 h-13 flex items-center px-2.5 bg-white">
         <ModelSelector value={chat.model} onChange={(m) => updateModel(chatId, m)} />

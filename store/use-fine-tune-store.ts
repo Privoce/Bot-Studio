@@ -7,6 +7,7 @@ interface Store {
   files: OpenAIFile[];
   fineTunes: FineTune[];
   events: Dictionary<FineTuneEvent[]>;
+  addFineTune: (fineTune: FineTune) => void;
   setFineTune: (fineTune: FineTune) => void;
   setFineTunes: (fineTunes: FineTune[]) => void;
   setEvents: (fineTuneId: string, events: FineTuneEvent[]) => void;
@@ -20,6 +21,10 @@ export const useFineTuneStore = create(
     files: [],
     fineTunes: [],
     events: {},
+    addFineTune: (fineTune) =>
+      set((state) => {
+        state.fineTunes.push(fineTune);
+      }),
     setFineTune: (fineTune) =>
       set((state) => {
         state.fineTunes = state.fineTunes.map((f) => (f.id === fineTune.id ? fineTune : f));

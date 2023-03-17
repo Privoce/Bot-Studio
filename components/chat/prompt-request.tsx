@@ -1,17 +1,17 @@
 import { FC, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateCompletionRequest, CreateCompletionResponse } from 'openai';
-import { CompletionMessage } from '../../types/chat';
+import { Chat, CompletionMessage } from '../../types/chat';
 import { useChatStore } from '../../store/use-chat-store';
 import { useOpenaiStream } from '../../hooks/use-openai-stream';
 
 interface Props {
-  chatId: string;
+  chat: Chat;
   promptId: string;
   apiKey?: string;
 }
 
-const Index: FC<Props> = ({ chatId, promptId, apiKey }) => {
+const Index: FC<Props> = ({ chat, promptId, apiKey }) => {
   const startCompletion = useChatStore((s) => s.startCompletion);
   const updateCompletion = useChatStore((s) => s.updateCompletion);
   const endCompletion = useChatStore((s) => s.endCompletion);
@@ -26,7 +26,7 @@ const Index: FC<Props> = ({ chatId, promptId, apiKey }) => {
         type: 'completion',
         id: uuidv4(),
         content: '',
-        chatId,
+        chatId: chat.id,
         promptId,
         duration: 0,
       };
@@ -36,7 +36,7 @@ const Index: FC<Props> = ({ chatId, promptId, apiKey }) => {
         await mutateAsync<CreateCompletionRequest>({
           url: 'https://api.openai.com/v1/completions',
           body: {
-            model: 'text-davinci-003',
+            model: chat.model.id,
             prompt,
             stream: true,
             max_tokens: 64,

@@ -12,9 +12,16 @@ import ModalCreateFineTune from '../components/fine-tunes/modal-create-fine-tune
 
 const Home: NextPage = () => {
   const { openai } = useOpenai();
-  const { fineTunes, setFineTunes } = useFineTuneStore((s) => s);
+  const fineTunes = useFineTuneStore((s) => s.fineTunes);
+  const addFineTune = useFineTuneStore((s) => s.addFineTune);
+  const setFineTunes = useFineTuneStore((s) => s.setFineTunes);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const createMut = useMutation(openai.createFineTune);
+  const createMut = useMutation(openai.createFineTune, {
+    onSuccess: (fineTune) => {
+      setShowCreateModal(false);
+      addFineTune(fineTune);
+    },
+  });
 
   useQuery({
     enabled: openai.enabled,
