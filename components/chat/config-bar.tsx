@@ -46,7 +46,7 @@ const Index: FC<Props> = () => {
   const {
     reset,
     register,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
     control,
   } = useForm<DTO>({
@@ -195,6 +195,7 @@ const Index: FC<Props> = () => {
           </div>
         </Field>
         <div className="pt-3 pb-4">
+          {isDirty && <div className="text-sm py-2 text-red-500">You have unsaved changes.</div>}
           <Button type="submit" variant="contained" className="w-full">
             Update Completion Config
           </Button>
