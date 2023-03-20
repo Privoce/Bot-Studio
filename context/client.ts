@@ -14,6 +14,15 @@ import {
 import Router from 'next/router';
 import { hasText } from '../utils/string';
 
+interface OpenAIError {
+  error: {
+    message: string;
+    type: string;
+    param: object;
+    code: object;
+  };
+}
+
 export class OpenAIApi {
   private readonly axios: AxiosInstance;
 
@@ -30,7 +39,7 @@ export class OpenAIApi {
     });
     this.axios.interceptors.response.use(
       (response) => response,
-      (reject: AxiosError) => {
+      (reject: AxiosError<OpenAIError>) => {
         const { response } = reject;
         if (!response) {
           console.error('NETWORK_ERR:', reject);
@@ -39,6 +48,10 @@ export class OpenAIApi {
         // 401 Unauthorized redirect
         if (response.status === 401 && !Router.asPath.includes('onboarding')) {
           Router.push('/onboarding');
+          return Promise.reject(reject);
+        }
+        if (response.data && response.data.error) {
+          // todo: toast.error(response.data.error.message);
           return Promise.reject(reject);
         }
         // todo: toast.error message

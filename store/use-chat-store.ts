@@ -10,6 +10,11 @@ import {
   getDefaultChat,
   PromptMessage,
 } from '../types/chat';
+import {
+  DEFAULT_COMPLETION_CONFIG,
+  getCompletionConfig,
+  setCompletionConfig,
+} from '../context/storage';
 
 const DEFAULT_CHAT = getDefaultChat();
 
@@ -19,6 +24,7 @@ interface Store {
   chatIds: string[];
   globalConfig: CompletionConfig;
   updateGlobalConfig: (config: CompletionConfig) => void;
+  resetGlobalConfig: () => void;
   addChat: (chat: Chat) => void;
   removeChat: (chatId: string) => void;
   updateModel: (chatId: string, model: Model) => void;
@@ -33,25 +39,16 @@ export const useChatStore = create(
     chats: { [DEFAULT_CHAT.id]: DEFAULT_CHAT },
     messages: {},
     chatIds: [DEFAULT_CHAT.id],
-    globalConfig: {
-      suffix: undefined,
-      max_tokens: 16,
-      temperature: undefined,
-      top_p: undefined,
-      n: undefined,
-      stream: true,
-      logprobs: undefined,
-      echo: false,
-      stop: undefined,
-      presence_penalty: undefined,
-      frequency_penalty: undefined,
-      best_of: undefined, // must be greater than n
-      logit_bias: undefined,
-      user: undefined,
-    },
+    globalConfig: getCompletionConfig(),
     updateGlobalConfig: (config) =>
       set((state) => {
         state.globalConfig = config;
+        setCompletionConfig(config);
+      }),
+    resetGlobalConfig: () =>
+      set((state) => {
+        state.globalConfig = DEFAULT_COMPLETION_CONFIG;
+        setCompletionConfig(DEFAULT_COMPLETION_CONFIG);
       }),
     addChat: (chat) =>
       set((state) => {
