@@ -150,8 +150,8 @@ const Index: FC<Props> = ({ value, onChange }) => {
           <Options name="My Models" models={options.myModels} defaultExpanded onSelect={onSelect} />
           <Options name="OpenAI" models={options.openai} onSelect={onSelect} />
           <Options name="OpenAI Dev" models={options.openaiDev} onSelect={onSelect} />
-          <Options name="OpenAI Internal" models={options.openai} onSelect={onSelect} />
-          <Options name="System" models={options.openai} onSelect={onSelect} />
+          <Options name="OpenAI Internal" models={options.openaiInternal} onSelect={onSelect} />
+          <Options name="System" models={options.system} onSelect={onSelect} />
         </div>
       )}
     </>

@@ -96,6 +96,7 @@ export const DEFAULT_COMPLETION_CONFIG: CompletionConfig = {
 };
 
 export function getCompletionConfig(): CompletionConfig {
+  if (typeof localStorage === 'undefined') return DEFAULT_COMPLETION_CONFIG;
   try {
     const text = localStorage.getItem(OPENAI_CONFIG_COMPLETION);
     if (text === null) return DEFAULT_COMPLETION_CONFIG;
