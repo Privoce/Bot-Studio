@@ -34,14 +34,15 @@ const Index: FC<Props> = ({ chat, promptId, apiKey }) => {
       startCompletion(completion);
       const start = performance.now();
       try {
+        const { suffix, ...nullable } = { ...globalConfig, ...chat.config };
+        const nonnull = Object.fromEntries(Object.entries(nullable).filter(([_, v]) => v != null));
         await mutateAsync<CreateCompletionRequest>({
           url: 'https://api.openai.com/v1/completions',
           body: {
             model: chat.model.id,
-            prompt,
+            prompt: suffix ? prompt + suffix : prompt,
             // user config
-            ...globalConfig,
-            ...chat.config,
+            ...nonnull,
           },
           onmessage: (e) => {
             if (e.data === '[DONE]') {
@@ -55,6 +56,8 @@ const Index: FC<Props> = ({ chat, promptId, apiKey }) => {
         });
       } catch (e) {
         console.error(e);
+        updateCompletion({ id: completion.id, content: 'REQUEST_ERROR' });
+        endCompletion(completion);
       }
     };
     query();

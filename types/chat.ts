@@ -1,7 +1,7 @@
 import { CreateCompletionRequest, Model } from 'openai';
 import { v4 as uuidv4 } from 'uuid';
 
-export type CompletionConfig = Omit<CreateCompletionRequest, 'model' | 'prompt'>;
+export type CompletionConfig = Omit<CreateCompletionRequest, 'model' | 'prompt' | 'user'>;
 
 export interface Chat {
   id: string;

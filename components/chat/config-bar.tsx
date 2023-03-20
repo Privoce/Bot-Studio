@@ -43,10 +43,11 @@ const Index: FC<Props> = () => {
 
   const globalConfig = useChatStore((s) => s.globalConfig);
   const updateGlobalConfig = useChatStore((s) => s.updateGlobalConfig);
+  const resetGlobalConfig = useChatStore((s) => s.resetGlobalConfig);
   const {
     reset,
     register,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
     control,
   } = useForm<DTO>({
@@ -112,8 +113,12 @@ const Index: FC<Props> = () => {
   }, [globalConfig]);
 
   const onUpdate = (dto: DTO) => {
-    // todo: toast.success
     updateGlobalConfig(DTOToConfig(dto));
+  };
+
+  const onReset = (e: MouseEvent) => {
+    e.stopPropagation();
+    resetGlobalConfig();
   };
 
   return (
@@ -194,9 +199,13 @@ const Index: FC<Props> = () => {
             </Button>
           </div>
         </Field>
-        <div className="pt-3 pb-4">
+        {isDirty && <div className="text-sm pt-2 text-red-500">You have unsaved changes.</div>}
+        <div className="flex pt-3 pb-4 space-x-3">
           <Button type="submit" variant="contained" className="w-full">
-            Update Completion Config
+            Update Config
+          </Button>
+          <Button type="button" variant="outlined" onClick={onReset}>
+            Reset
           </Button>
         </div>
       </form>
