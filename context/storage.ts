@@ -1,7 +1,9 @@
 import { OpenaiConfig } from '../types/config';
+import { CompletionConfig } from '../types/chat';
 
 const OPENAI_CONFIGS_KEY = 'openai_configs';
 const OPENAI_SELECTED_ORG = 'openai_selected_org';
+const OPENAI_CONFIG_COMPLETION = 'openai_config_completion';
 
 type OpenaiConfigs = Record<string, OpenaiConfig>;
 
@@ -75,4 +77,35 @@ export function clearOpenaiConfig(id: string) {
   } catch (e) {
     console.error('clear config failed:', e);
   }
+}
+
+export const DEFAULT_COMPLETION_CONFIG: CompletionConfig = {
+  suffix: null,
+  max_tokens: 256, // common
+  temperature: null, // common
+  top_p: null, // common
+  n: null, // common
+  stream: true,
+  logprobs: null,
+  echo: false,
+  stop: null, // common
+  presence_penalty: null, // common
+  frequency_penalty: null, // common
+  best_of: null, // must be greater than n
+  logit_bias: null, // common
+};
+
+export function getCompletionConfig(): CompletionConfig {
+  try {
+    const text = localStorage.getItem(OPENAI_CONFIG_COMPLETION);
+    if (text === null) return DEFAULT_COMPLETION_CONFIG;
+    return JSON.parse(text) as CompletionConfig;
+  } catch (e) {
+    console.error(e);
+    return DEFAULT_COMPLETION_CONFIG;
+  }
+}
+
+export function setCompletionConfig(config: CompletionConfig) {
+  localStorage.setItem(OPENAI_CONFIG_COMPLETION, JSON.stringify(config));
 }
