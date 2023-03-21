@@ -36,7 +36,7 @@ const Home: NextPage = () => {
 
   return (
     <Dashboard>
-      <div className="px-4 sm:px-6 pb-13">
+      <div className="px-4 sm:px-6 pb-24">
         <H2>My Models</H2>
         <MyModels
           models={myModels}

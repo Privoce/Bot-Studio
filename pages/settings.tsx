@@ -5,7 +5,7 @@ import H2 from '../components/heading/h2';
 
 const Home: NextPage = () => (
   <Dashboard>
-    <div className="px-4 sm:px-6">
+    <div className="px-4 sm:px-6 pb-24">
       <H2>Settings</H2>
       <div>Current Version: {pkg.version}</div>
     </div>

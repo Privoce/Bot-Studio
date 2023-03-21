@@ -122,7 +122,7 @@ const Index: FC<Props> = () => {
   };
 
   return (
-    <div className="relative h-full w-72 overflow-y-auto grow-0 shrink-0">
+    <div className="relative h-full w-72 overflow-y-auto grow-0 shrink-0 pb-20">
       <div className="absolute left-0 top-0 bottom-0 border-l" />
       <div className="relative h-13 flex items-center text-lg font-medium px-4">
         <div>Global Config</div>

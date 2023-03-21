@@ -30,12 +30,24 @@ const Index: FC<Props> = () => (
       target="_blank"
       rel="noreferrer"
       href="https://github.com/Privoce/Bot-Studio"
-      className="h-10 pl-1 flex items-center hover-theme hover:text-theme-700"
+      className="group h-10 pl-1 flex items-center hover-theme hover:text-theme-700"
     >
       <div className="w-10 h-10 p-2.5">
         <IconGithub className="w-5 h-5" />
       </div>
       <div className="text-sm font-medium">Privoce/Bot-Studio</div>
+      <div className="pl-2">
+        <img
+          alt="Github Star Count"
+          className="opacity-0 w-0 group-hover:opacity-100 group-hover:w-fit"
+          src="https://img.shields.io/badge/dynamic/json?color=%23047857&label=%20&query=%24%5B%27stargazers_count%27%5D&url=https%3A%2F%2Fapi.github.com%2Frepos%2FPrivoce%2FBot-Studio"
+        />
+        <img
+          alt="Github Star Count"
+          className="opacity-100 w-fit group-hover:opacity-0 group-hover:w-0"
+          src="https://img.shields.io/badge/dynamic/json?color=%23111827&label=%20&query=%24%5B%27stargazers_count%27%5D&url=https%3A%2F%2Fapi.github.com%2Frepos%2FPrivoce%2FBot-Studio"
+        />
+      </div>
     </a>
     <a
       target="_blank"
