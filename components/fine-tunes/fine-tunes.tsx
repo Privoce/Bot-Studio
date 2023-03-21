@@ -13,6 +13,7 @@ import { useFineTuneStore } from '../../store/use-fine-tune-store';
 import DrawerFiles from './drawer-files';
 import Copy5 from '../button/copy-5';
 import Dialog from '../../lib/dialog';
+import { statusStyle } from '../../utils/style';
 
 interface Props {
   fineTunes: FineTune[];
@@ -89,7 +90,16 @@ const Index: FC<Props> = ({ fineTunes }) => {
               </td>
               <td className="w-px">{f.model}</td>
               <td className="w-full">{getSuffix(f.fine_tuned_model)}</td>
-              <td className="w-px">{f.status}</td>
+              <td className="w-px">
+                <div
+                  className={clsx(
+                    'text-xs rounded px-1.5 py-px w-fit font-medium',
+                    statusStyle[f.status ?? '']
+                  )}
+                >
+                  {f.status}
+                </div>
+              </td>
               <td className="w-px">{dayjs.unix(f.created_at).format('YYYY-MM-DD HH:mm:ss')}</td>
               <td className="w-px">{dayjs.unix(f.updated_at).format('YYYY-MM-DD HH:mm:ss')}</td>
               <td className="w-px">

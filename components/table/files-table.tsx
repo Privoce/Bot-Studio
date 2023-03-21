@@ -9,6 +9,7 @@ import Dialog from '../../lib/dialog';
 import IconDownload from '../../assets/material/download_FILL0_wght400_GRAD0_opsz20.svg';
 import { useOpenai } from '../../context/openai';
 import { download } from '../../utils/file';
+import { statusStyle } from '../../utils/style';
 
 interface Props {
   isLoading?: boolean;
@@ -75,7 +76,16 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
               </td>
               <td className="w-full">{f.filename}</td>
               <td className="w-px">{f.purpose}</td>
-              <td className="w-px">{f.status}</td>
+              <td className="w-px">
+                <div
+                  className={clsx(
+                    'text-xs rounded px-1.5 py-px w-fit font-medium',
+                    statusStyle[f.status ?? '']
+                  )}
+                >
+                  {f.status}
+                </div>
+              </td>
               <td className="w-px">{dayjs.unix(f.created_at).format('YYYY-MM-DD HH:mm:ss')}</td>
               <td className="w-px">{bytesFormatter.format(f.bytes)}</td>
               <td className="w-px">
