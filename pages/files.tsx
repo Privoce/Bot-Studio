@@ -36,7 +36,7 @@ const Home: NextPage = () => {
 
   return (
     <Dashboard>
-      <div className="px-4 sm:px-6">
+      <div className="px-4 sm:px-6 pb-24">
         <H2 className="flex items-center">
           <div>Files</div>
           <div className="flex-1" />

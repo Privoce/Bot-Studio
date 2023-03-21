@@ -39,7 +39,7 @@ const Home: NextPage = () => {
 
   return (
     <Dashboard>
-      <div className="px-4 sm:px-6 pb-13">
+      <div className="px-4 sm:px-6 pb-24">
         <H2 className="flex justify-between items-center">
           <div>Fine Tunes</div>
           <div>

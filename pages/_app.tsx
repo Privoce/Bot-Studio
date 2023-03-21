@@ -10,6 +10,7 @@ import UAParser from 'ua-parser-js';
 import { OpenaiContextProvider } from '../context/openai';
 import Gtag from '../components/track/gtag';
 import { useClientStore } from '../store/use-client-store';
+import Bridger from '../components/track/bridger';
 
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: DehydratedS
   return (
     <>
       <Gtag tagId="G-3CFLVWPL2J" />
+      <Bridger />
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <OpenaiContextProvider>
