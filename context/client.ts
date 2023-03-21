@@ -13,6 +13,7 @@ import {
 } from 'openai';
 import Router from 'next/router';
 import { hasText } from '../utils/string';
+import { toast } from '../lib/toast';
 
 interface OpenAIError {
   error: {
@@ -42,7 +43,7 @@ export class OpenAIApi {
       (reject: AxiosError<OpenAIError>) => {
         const { response } = reject;
         if (!response) {
-          console.error('NETWORK_ERR:', reject);
+          toast.error('Network Error');
           return Promise.reject(reject);
         }
         // 401 Unauthorized redirect
@@ -51,10 +52,10 @@ export class OpenAIApi {
           return Promise.reject(reject);
         }
         if (response.data && response.data.error) {
-          // todo: toast.error(response.data.error.message);
+          toast.error(response.data.error.message);
           return Promise.reject(reject);
         }
-        // todo: toast.error message
+        toast.error('Unknown Error');
         return Promise.reject(reject);
       }
     );

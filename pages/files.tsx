@@ -7,6 +7,7 @@ import FilesTable from '../components/table/files-table';
 import { useFineTuneStore } from '../store/use-fine-tune-store';
 import Button from '../lib/form/button';
 import Upload from '../lib/form/upload';
+import { toast } from '../lib/toast';
 
 const Home: NextPage = () => {
   const { openai } = useOpenai();
@@ -15,20 +16,16 @@ const Home: NextPage = () => {
   const setFiles = useFineTuneStore((s) => s.setFiles);
   const removeFile = useFineTuneStore((s) => s.removeFile);
 
-  useQuery({
+  const { isLoading } = useQuery({
     enabled: openai.enabled,
     queryKey: ['files'],
     queryFn: () => openai.listFiles(),
     onSuccess: (data) => setFiles(data.data.sort((a, b) => a.created_at - b.created_at)),
   });
 
-  const deleteMut = useMutation(openai.deleteFile, {
-    onSuccess: (data) => removeFile(data.id),
-  });
-
   const uploadMut = useMutation(openai.createFile, {
     onSuccess: (f) => {
-      // todo: toast.success
+      toast.success('File uploaded successfully');
       addFile(f);
     },
   });
@@ -50,8 +47,8 @@ const Home: NextPage = () => {
         <FilesTable
           showMore
           files={files}
-          isLoading={deleteMut.isLoading}
-          onDelete={(f) => deleteMut.mutate(f.id)}
+          isLoading={isLoading}
+          onDelete={(fileId) => removeFile(fileId)}
         />
       </div>
     </Dashboard>

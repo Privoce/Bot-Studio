@@ -10,12 +10,13 @@ import IconDownload from '../../assets/material/download_FILL0_wght400_GRAD0_ops
 import { useOpenai } from '../../context/openai';
 import { download } from '../../utils/file';
 import { statusStyle } from '../../utils/style';
+import { toast } from '../../lib/toast';
 
 interface Props {
   isLoading?: boolean;
   files: OpenAIFile[];
   showMore?: boolean;
-  onDelete?: (file: OpenAIFile) => void;
+  onDelete?: (fileId: string) => void;
 }
 
 const bytesFormatter = Intl.NumberFormat('en', {
@@ -34,6 +35,14 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
       const file = files.find((f) => f.id === id);
       if (!file) return;
       download(data, file.filename);
+    },
+  });
+
+  const { mutate: deleteMut } = useMutation(openai.deleteFile, {
+    onSuccess: (data) => {
+      toast.success('File deleted successfully');
+      setShowDeleteDialog(false);
+      onDelete?.(data.id);
     },
   });
 
@@ -133,7 +142,7 @@ const Index: FC<Props> = ({ isLoading, files, showMore, onDelete }) => {
           cancelDisabled={isLoading}
           dangerDisabled={isLoading}
           onCancel={() => setShowDeleteDialog(false)}
-          onDanger={() => onDelete?.(selected)}
+          onDanger={() => deleteMut(selected.id)}
         />
       )}
     </div>
